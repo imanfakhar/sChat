@@ -1,0 +1,48 @@
+apply plugin: 'java'
+apply plugin: 'application'
+
+def applicationName = "sChat"
+
+sourceCompatibility = 1.8
+version = '1.0'
+
+mainClassName = "de.sChat.server.main.Main"
+
+def junitversion = '4.+'
+def mockitoversion = '1.+'
+def jettyversion = "9.2.+"
+
+repositories {
+	mavenCentral()
+	jcenter()
+}
+
+dependencies {
+	compile group: 'org.eclipse.jetty', name: 'jetty-server', version: jettyversion
+	
+	testCompile group: 'junit', name: 'junit', version: junitversion
+	testCompile group: 'org.mockito', name: 'mockito-core', version: mockitoversion
+}
+
+task myJavadocs(type: Javadoc) {    
+    source = sourceSets.main.allJava
+    options.memberLevel = JavadocMemberLevel.PUBLIC
+    classpath = configurations.compile
+    destinationDir = file("./doc/")
+  }
+
+jar {
+    manifest {
+        attributes 'Implementation-Title': applicationName,
+                   'Implementation-Version': version,
+                   'Main-Class': 'de.sChat.server.main.Main'
+    }
+}
+
+uploadArchives {
+    repositories {
+       flatDir {
+           dirs 'compiled'
+       }
+    }
+}

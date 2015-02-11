@@ -6,7 +6,6 @@
 .mtj.tmp/
 
 # Package Files #
-*.jar
 *.war
 *.ear
 
@@ -14,3 +13,5 @@
 hs_err_pid*
 >>>>>>> branch 'master' of https://github.com/schnawel007/sChat.git
 /bin/
+/.gradle/
+/build/
