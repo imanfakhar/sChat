@@ -1,9 +1,10 @@
 apply plugin: 'java'
 apply plugin: 'application'
+apply plugin: 'eclipse'
 
 def applicationName = "sChat"
 
-sourceCompatibility = 1.8
+sourceCompatibility = 1.7
 version = '1.0'
 
 mainClassName = "de.sChat.server.main.Main"
