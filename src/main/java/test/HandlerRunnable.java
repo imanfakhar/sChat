@@ -58,8 +58,6 @@ class HandlerRunnable implements Runnable {
 						acceptedClient.getInputStream()));
 				handleConnection();
 			}
-			app.incomingMessage("ROBOT", "<<<<<<<<<<<<<<<<<[" + name
-					+ "] has left the Room");
 		} catch (IOException e) {
 			e.printStackTrace();
 		} finally {
@@ -72,7 +70,7 @@ class HandlerRunnable implements Runnable {
 			}
 
 		}
-		app.incomingMessage("ROBOT", "<<<<<<<<<<<<<<<<<[" + name
+		app.incomingMessage("ROBOT", "<<<<<<<<<<<<<<<<[" + name
 				+ "] has left the Room");
 	}
 
