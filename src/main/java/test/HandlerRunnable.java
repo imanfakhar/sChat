@@ -7,10 +7,11 @@ import java.io.PrintWriter;
 import java.net.Socket;
 
 class HandlerRunnable implements Runnable {
-	private static PrintWriter out;
+	private PrintWriter out;
 	private Socket acceptedClient;
 	private App app;
 	private String name = null;
+	private BufferedReader reader;
 
 	public HandlerRunnable(Socket acceptedClient, App app) throws IOException {
 		this.acceptedClient = acceptedClient;
@@ -29,7 +30,7 @@ class HandlerRunnable implements Runnable {
 	public void run() {
 		try {
 			out.println("Bitte geben Sie ihren Nutzername an");
-			BufferedReader reader = new BufferedReader(new InputStreamReader(
+			reader = new BufferedReader(new InputStreamReader(
 					acceptedClient.getInputStream()));
 			this.name = reader.readLine();
 			out.println("Vielen Dank, " + name + "!");
@@ -39,7 +40,7 @@ class HandlerRunnable implements Runnable {
 			while (true) {
 				reader = new BufferedReader(new InputStreamReader(
 						acceptedClient.getInputStream()));
-				handleConnection(acceptedClient);
+				handleConnection();
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -54,9 +55,7 @@ class HandlerRunnable implements Runnable {
 		}
 	}
 
-	private void handleConnection(Socket client) throws IOException {
-		BufferedReader reader = new BufferedReader(new InputStreamReader(
-				client.getInputStream()));
+	private void handleConnection() throws IOException {
 		String input = null;
 		while (reader.ready()) {
 			input = reader.readLine();
