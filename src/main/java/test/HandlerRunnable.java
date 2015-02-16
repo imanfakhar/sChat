@@ -20,11 +20,25 @@ class HandlerRunnable implements Runnable {
 
 	}
 
-	public synchronized void outgoingMessage(String input) {
-		System.out.println("out hash of:[" + name + "]: " + out.toString());
-		if (name != null) {
-			out.println(input);
+	public synchronized void outgoingMessage(String name, String input) {
+		System.out.println("out hash of:[" + name + "]: " + out.toString()
+				+ " " + input);
+		if (name != null && !name.equals(this.name)) {
+			out.print(getEscapedName());
+			out.println(name + ":" + input);
+			printPrompt();
 		}
+		if (name.equals(this.name)) {
+			printPrompt();
+		}
+	}
+
+	private String getEscapedName() {
+		String esc = "";
+		for (int i = 0; i < getPrompt().length(); i++) {
+			esc += "\b";
+		}
+		return esc;
 	}
 
 	public void run() {
@@ -34,14 +48,18 @@ class HandlerRunnable implements Runnable {
 					acceptedClient.getInputStream()));
 			this.name = reader.readLine();
 			out.println("Vielen Dank, " + name + "!");
+			printPrompt();
+			app.incomingMessage("ROBOT", ">>>>>>>>>>>>>>>>[" + name
+					+ "] has entered the Room");
 			System.out.println(this.toString() + " heiﬂt jetzt : [" + name
 					+ "]");
-
-			while (true) {
+			while (!out.checkError()) {
 				reader = new BufferedReader(new InputStreamReader(
 						acceptedClient.getInputStream()));
 				handleConnection();
 			}
+			app.incomingMessage("ROBOT", "<<<<<<<<<<<<<<<<<[" + name
+					+ "] has left the Room");
 		} catch (IOException e) {
 			e.printStackTrace();
 		} finally {
@@ -52,7 +70,18 @@ class HandlerRunnable implements Runnable {
 					e.printStackTrace();
 				}
 			}
+
 		}
+		app.incomingMessage("ROBOT", "<<<<<<<<<<<<<<<<<[" + name
+				+ "] has left the Room");
+	}
+
+	private void printPrompt() {
+		out.print(getPrompt());
+	}
+
+	private String getPrompt() {
+		return name + ":";
 	}
 
 	private void handleConnection() throws IOException {

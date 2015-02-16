@@ -26,7 +26,7 @@ public class App {
 
 	public synchronized void incomingMessage(String name, String input) {
 		for (HandlerRunnable handlerThread : listeMitThreads) {
-			handlerThread.outgoingMessage(name + ": " + input);
+			handlerThread.outgoingMessage(name, input);
 		}
 	}
 
