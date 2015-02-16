@@ -7,7 +7,7 @@ def applicationName = "sChat"
 sourceCompatibility = 1.7
 version = '1.0'
 
-mainClassName = "de.sChat.test.App"
+mainClassName = "test.App"
 
 def junitversion = '4.+'
 def mockitoversion = '1.+'
@@ -36,7 +36,7 @@ jar {
     manifest {
         attributes 'Implementation-Title': applicationName,
                    'Implementation-Version': version,
-                   'Main-Class': 'de.sChat.server.test.App'
+                   'Main-Class': 'test.App'
     }
 }
 
