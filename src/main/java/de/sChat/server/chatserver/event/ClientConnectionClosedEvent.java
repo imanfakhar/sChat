@@ -12,4 +12,9 @@ public class ClientConnectionClosedEvent extends Event {
 		this.handlerRunnable = handlerRunnable2;
 	}
 
+
+	public HandlerRunnable getHandlerRunnable() {
+		return handlerRunnable;
+	}
+
 }
