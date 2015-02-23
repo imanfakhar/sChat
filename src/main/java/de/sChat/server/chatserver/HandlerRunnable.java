@@ -13,7 +13,8 @@ class HandlerRunnable implements Runnable {
 	private String name = null;
 	private BufferedReader reader;
 
-	public HandlerRunnable(Socket acceptedClient, ChatServer server) throws IOException {
+	public HandlerRunnable(Socket acceptedClient, ChatServer server)
+			throws IOException {
 		this.acceptedClient = acceptedClient;
 		this.server = server;
 		out = new PrintWriter(acceptedClient.getOutputStream(), true);
@@ -21,8 +22,6 @@ class HandlerRunnable implements Runnable {
 	}
 
 	public synchronized void outgoingMessage(String name, String input) {
-		System.out.println("out hash of:[" + name + "]: " + out.toString()
-				+ " " + input);
 		if (name != null && !name.equals(this.name)) {
 			out.print(getEscapedName());
 			out.println(name + ":" + input);
