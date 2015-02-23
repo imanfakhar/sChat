@@ -2,22 +2,29 @@ package de.sChat.server.chatserver.message;
 
 public class Message {
 	
-	@Override
-	public String toString() {
-		return "Message [name=" + name + ", nachricht=" + nachricht + "]";
-	}
-	String name;
-	String nachricht;
+	MessageData data;
+	String type;
+	
 	public Message(String name, String nachricht) {
-		super();
-		this.name = name;
-		this.nachricht = nachricht;
+		this(name,nachricht,"message");
 	}
+	
+	public Message(String name, String nachricht, String type) {
+		data = new MessageData(name,nachricht);
+		this.type = type;
+	}
+	
 	public String getName() {
-		return name;
+		return data.getName();
 	}
+	
 	public String getNachricht() {
-		return nachricht;
+		return data.getNachricht();
 	}
 
+	public String getType() {
+		return type;
+	}
+
+	
 }

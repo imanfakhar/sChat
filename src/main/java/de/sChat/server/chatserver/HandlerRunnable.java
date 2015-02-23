@@ -12,6 +12,7 @@ import de.sChat.server.chatserver.event.ClientConnectionClosedEvent;
 import de.sChat.server.chatserver.event.IncommingMessageEvent;
 import de.sChat.server.chatserver.event.OutGoingMessageEvent;
 import de.sChat.server.chatserver.message.Message;
+import de.sChat.server.chatserver.message.MessageParser;
 
 public class HandlerRunnable implements Runnable {
 	private PrintWriter out;
@@ -29,40 +30,15 @@ public class HandlerRunnable implements Runnable {
 
 	@Handler
 	public void outgoingMessage(OutGoingMessageEvent event) {
-		System.out.println("out hash of:[" + event.getMsg().getName() + "]: " + out.toString()
-				+ " " + event.getMsg().getNachricht());
-		if (event.getMsg().getName() != null && !event.getMsg().getName().equals(this.name)) {
-			out.print(getEscapedName());
-			out.println(event.getMsg().getName() + ":" + event.getMsg().getNachricht());
-			printPrompt();
-		}
-		if (event.getMsg().getName().equals(this.name)) {
-			printPrompt();
-		}
-	}
-
-	private String getEscapedName() {
-		String esc = "";
-		for (int i = 0; i < getPrompt().length(); i++) {
-			esc += "\b";
-		}
-		return esc;
+		Message msg = event.getMsg();
+		if(!msg.getName().equals(name))
+			out.println(msg.getName() + ":" + msg.getNachricht());
 	}
 
 	public void run() {
 		try {
-			out.println("Bitte geben Sie ihren Nutzername an");
-			reader = new BufferedReader(new InputStreamReader(
-					acceptedClient.getInputStream()));
-			this.name = reader.readLine();
-			out.println("Vielen Dank, " + name + "!");
-			printPrompt();
-			bus.publishSync(new IncommingMessageEvent(new Message("ROBOT", ">>>>>>>>>>>>>>>>[" + name + "] has entered the Room")));
-			System.out.println(this.toString() + " heiﬂt jetzt : [" + name
-					+ "]");
 			while (!out.checkError()) {
-				reader = new BufferedReader(new InputStreamReader(
-						acceptedClient.getInputStream()));
+				reader = new BufferedReader(new InputStreamReader(acceptedClient.getInputStream()));
 				handleConnection();
 			}
 		} catch (IOException e) {
@@ -77,16 +53,6 @@ public class HandlerRunnable implements Runnable {
 			}
 
 		}
-		bus.publishSync(new IncommingMessageEvent(new Message("ROBOT", "<<<<<<<<<<<<<<<<[" + name
-				+ "] has left the Room")));
-	}
-
-	private void printPrompt() {
-		out.print(getPrompt());
-	}
-
-	private String getPrompt() {
-		return name + ":";
 	}
 
 	private void handleConnection() throws IOException {
@@ -95,7 +61,7 @@ public class HandlerRunnable implements Runnable {
 			input = reader.readLine();
 		}
 		if (input != null) {
-			bus.publishSync(new IncommingMessageEvent(new Message(name, input)));
+			bus.publishSync(new IncommingMessageEvent(MessageParser.parseMessage(input)));
 		}
 		if(acceptedClient.isClosed())
 		{
