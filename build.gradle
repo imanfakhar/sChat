@@ -7,7 +7,7 @@ def applicationName = 'sChat'
 sourceCompatibility = 1.7
 version = '1.0'
 
-mainClassName = 'de.sChat.client.View'
+mainClassName = 'de.sChat.client.Client'
 
 def junitversion = '4.+'
 def mockitoversion = '1.+'
