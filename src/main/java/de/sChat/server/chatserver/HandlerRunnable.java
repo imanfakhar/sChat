@@ -1,4 +1,4 @@
-package test;
+package de.sChat.server.chatserver;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -9,13 +9,13 @@ import java.net.Socket;
 class HandlerRunnable implements Runnable {
 	private PrintWriter out;
 	private Socket acceptedClient;
-	private App app;
+	private ChatServer server;
 	private String name = null;
 	private BufferedReader reader;
 
-	public HandlerRunnable(Socket acceptedClient, App app) throws IOException {
+	public HandlerRunnable(Socket acceptedClient, ChatServer server) throws IOException {
 		this.acceptedClient = acceptedClient;
-		this.app = app;
+		this.server = server;
 		out = new PrintWriter(acceptedClient.getOutputStream(), true);
 
 	}
@@ -49,7 +49,7 @@ class HandlerRunnable implements Runnable {
 			this.name = reader.readLine();
 			out.println("Vielen Dank, " + name + "!");
 			printPrompt();
-			app.incomingMessage("ROBOT", ">>>>>>>>>>>>>>>>[" + name
+			server.incomingMessage("ROBOT", ">>>>>>>>>>>>>>>>[" + name
 					+ "] has entered the Room");
 			System.out.println(this.toString() + " heiﬂt jetzt : [" + name
 					+ "]");
@@ -70,7 +70,7 @@ class HandlerRunnable implements Runnable {
 			}
 
 		}
-		app.incomingMessage("ROBOT", "<<<<<<<<<<<<<<<<[" + name
+		server.incomingMessage("ROBOT", "<<<<<<<<<<<<<<<<[" + name
 				+ "] has left the Room");
 	}
 
@@ -88,7 +88,7 @@ class HandlerRunnable implements Runnable {
 			input = reader.readLine();
 		}
 		if (input != null) {
-			this.app.incomingMessage(name, input);
+			server.incomingMessage(name, input);
 		}
 	}
 }
