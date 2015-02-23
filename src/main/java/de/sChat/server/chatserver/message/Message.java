@@ -2,6 +2,10 @@ package de.sChat.server.chatserver.message;
 
 public class Message {
 	
+	@Override
+	public String toString() {
+		return "Message [name=" + name + ", nachricht=" + nachricht + "]";
+	}
 	String name;
 	String nachricht;
 	public Message(String name, String nachricht) {
