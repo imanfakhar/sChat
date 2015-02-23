@@ -7,19 +7,20 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-public class ManagerWindowItemName implements ManagerWindowItem {
+public class ManagerWindowItemSimple implements ManagerWindowItem {
 
-	public static final String NAME = "NAME";
+	private String id;
 	private JTextField txtName;
 	private JPanel panel;
 
-	public ManagerWindowItemName() {
+	public ManagerWindowItemSimple(String text, String id) {
 		panel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-		JLabel label = new JLabel("Name: ");
+		JLabel label = new JLabel(text);
 		txtName = new JTextField(10);
 		panel.add(label);
 		panel.add(txtName);
 		txtName = new JTextField();
+		this.id = id;
 	}
 
 	@Override
@@ -34,7 +35,7 @@ public class ManagerWindowItemName implements ManagerWindowItem {
 
 	@Override
 	public String getIdentifier() {
-		return NAME;
+		return id;
 	}
 
 }
