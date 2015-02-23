@@ -2,20 +2,19 @@ package de.sChat.client.connector;
 
 public class Connection {
 	StreamReader streamReader;
-	StreamWriter streamwriter;
+	StreamWriter streamWriter;
 
 	public StreamReader getStreamReader() {
 		return streamReader;
 	}
 
 	public StreamWriter getStreamwriter() {
-		return streamwriter;
+		return streamWriter;
 	}
 
-	public Connection(StreamReader streamReader,
-			StreamWriter streamWriter) {
+	public Connection(StreamReader streamReader, StreamWriter streamWriter) {
 		this.streamReader = streamReader;
-		this.streamwriter = streamwriter;
+		this.streamWriter = streamWriter;
 	}
 
 }

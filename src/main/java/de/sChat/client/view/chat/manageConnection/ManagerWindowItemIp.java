@@ -49,7 +49,7 @@ public class ManagerWindowItemIp implements ManagerWindowItem {
 	@Override
 	public String getValueAsString() {
 		String ip = txtFieldIp1.getText() + "." + txtFieldIp2.getText() + "."
-				+ txtFieldIp3.getText() + "." + txtFieldIp4.getText() + ".";
+				+ txtFieldIp3.getText() + "." + txtFieldIp4.getText();
 		return ip;
 	}
 

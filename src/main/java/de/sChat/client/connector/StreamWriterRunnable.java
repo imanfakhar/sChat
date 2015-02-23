@@ -1,5 +1,7 @@
 package de.sChat.client.connector;
 
+import java.io.BufferedWriter;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.LinkedList;
 import java.util.Queue;
@@ -17,7 +19,19 @@ public class StreamWriterRunnable implements Runnable, StreamWriter {
 	public void run() {
 		while (!isCloseRequested()) {
 			if (outgoingMessageAvailable()) {
-				printWriter.write(getNextMessage());
+				String message = getNextMessage();
+				System.out.println("Writer is writing to Server: " + message);
+
+				BufferedWriter writer = new BufferedWriter(printWriter);
+				try {
+					writer.write(message);
+					writer.newLine();
+					writer.flush();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				;
 			} else {
 				try {
 					Thread.sleep(100);

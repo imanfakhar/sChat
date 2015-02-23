@@ -8,7 +8,7 @@ import javax.swing.JLabel;
 import de.sChat.client.connector.StreamReader;
 
 public class ChatLog implements WindowComponent {
-	private JLabel label = new JLabel();
+	private JLabel label = new JLabel("<html>");
 
 	public ChatLog(StreamReader streamReader) {
 		label.setBackground(Color.white);
@@ -19,8 +19,9 @@ public class ChatLog implements WindowComponent {
 	}
 
 	public void addLine(String newLine) {
+		System.out.println("Schreibe neue Zeile ins fenster: " + newLine);
 		String text = label.getText();
-		text += System.getProperty("line.separator");
+		text += "<p>";
 		text += newLine;
 		label.setText(text);
 	}

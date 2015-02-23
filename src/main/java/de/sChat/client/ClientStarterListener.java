@@ -20,6 +20,8 @@ public class ClientStarterListener implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		window.dispose();
+		System.out.println("Connection to: " + window.getValueByName("IP")
+				+ " with port: " + window.getValueByName("PORT"));
 		Connector connector = new Connector(window.getValueByName("IP"),
 				window.getValueByName("PORT"));
 		Connection connection = null;

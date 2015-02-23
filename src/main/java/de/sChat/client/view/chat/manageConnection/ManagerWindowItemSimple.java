@@ -19,7 +19,6 @@ public class ManagerWindowItemSimple implements ManagerWindowItem {
 		txtName = new JTextField(10);
 		panel.add(label);
 		panel.add(txtName);
-		txtName = new JTextField();
 		this.id = id;
 	}
 
@@ -30,6 +29,7 @@ public class ManagerWindowItemSimple implements ManagerWindowItem {
 
 	@Override
 	public String getValueAsString() {
+		System.out.println("ID::" + id + "  value:" + txtName.getText());
 		return txtName.getText();
 	}
 

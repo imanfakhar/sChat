@@ -14,7 +14,7 @@ public class ChatWindowSimple implements ChatWindow {
 		contentPane = new JPanel(new BorderLayout());
 		window.setContentPane(contentPane);
 		window.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		window.setSize(300, 600);
+		window.setSize(600, 600);
 
 	}
 

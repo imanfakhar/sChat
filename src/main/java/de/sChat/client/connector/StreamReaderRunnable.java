@@ -38,6 +38,7 @@ public class StreamReaderRunnable implements Runnable, StreamReader {
 
 	private void putStringIfNeccessaryToQueue(String string) {
 		if (string != null) {
+			System.out.println("Reader is Reading from Server: " + string);
 			putString(string);
 		}
 	}
@@ -46,15 +47,19 @@ public class StreamReaderRunnable implements Runnable, StreamReader {
 		que.add(s);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see de.sChat.client.connector.StreamReader#newIncomingLine()
 	 */
 	@Override
 	public boolean newIncomingLine() {
-		return que.size() == 0;
+		return que.size() != 0;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see de.sChat.client.connector.StreamReader#getNewLine()
 	 */
 	@Override
