@@ -36,7 +36,7 @@ jar {
     manifest {
         attributes 'Implementation-Title': applicationName,
                    'Implementation-Version': version,
-                   'Main-Class': 'test.App'
+                   'Main-Class': mainClassName
     }
 }
 
