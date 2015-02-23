@@ -2,6 +2,8 @@ package de.sChat.client.view;
 
 import java.awt.event.ActionListener;
 
+import de.sChat.client.connector.StreamReader;
+import de.sChat.client.connector.StreamWriter;
 import de.sChat.client.view.chat.ChatLog;
 import de.sChat.client.view.chat.ChatWindow;
 import de.sChat.client.view.chat.ChatWindowSimple;
@@ -15,10 +17,11 @@ import de.sChat.client.view.chat.manageConnection.ManagerWindowItemText;
 
 public class WindowFactoryAndDrecorator {
 
-	public ChatWindow getDefaultChatWindow() {
+	public ChatWindow getDefaultChatWindow(StreamWriter writer,
+			StreamReader reader) {
 		ChatWindowSimple simpleWindow = new ChatWindowSimple();
-		ChatLog chat = new ChatLog();
-		InputField input = new InputField();
+		ChatLog chat = new ChatLog(reader);
+		InputField input = new InputField(writer);
 		simpleWindow.setChat(chat);
 		simpleWindow.setInput(input);
 		return simpleWindow;

@@ -4,10 +4,10 @@ import java.io.PrintWriter;
 import java.util.LinkedList;
 import java.util.Queue;
 
-public class StreamWriterRunnable implements Runnable {
+public class StreamWriterRunnable implements Runnable, StreamWriter {
 
 	private PrintWriter printWriter;
-	public Queue<String> outgoingQueue = new LinkedList<String>();
+	private Queue<String> outgoingQueue = new LinkedList<String>();
 
 	public StreamWriterRunnable(PrintWriter writer) {
 		this.printWriter = writer;

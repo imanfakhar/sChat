@@ -16,16 +16,19 @@ public class Connector {
 
 	public Connection connectWithName(String name)
 			throws NumberFormatException, IOException {
-		InetAddress serverAddress = InetAddress.getByName(name);
+		InetAddress serverAddress = InetAddress.getByName(ipAddress);
 		Socket socket = new Socket(serverAddress, new Integer(port).intValue());
-		Thread streamReader = new Thread(new StreamReaderRunnable(
-				socket.getInputStream()));
+		StreamReaderRunnable streamReader = new StreamReaderRunnable(
+				socket.getInputStream());
+		Thread streamReaderThread = new Thread(streamReader);
 		PrintWriter writer = new PrintWriter(socket.getOutputStream(), true);
-		Thread streamWriter = new Thread(new StreamWriterRunnable(writer));
 
-		streamReader.start();
-		streamWriter.start();
+		StreamWriterRunnable streamWriter = new StreamWriterRunnable(writer);
+		Thread streamWriterThread = new Thread(streamWriter);
 
-		return new Connection(socket);
+		streamReaderThread.start();
+		streamWriterThread.start();
+
+		return new Connection(streamReader, streamWriter);
 	}
 }

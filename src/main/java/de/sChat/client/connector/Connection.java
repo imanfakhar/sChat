@@ -1,9 +1,21 @@
 package de.sChat.client.connector;
 
-import java.net.Socket;
-
 public class Connection {
-	public Connection(Socket socket) {
+	StreamReader streamReader;
+	StreamWriter streamwriter;
 
+	public StreamReader getStreamReader() {
+		return streamReader;
 	}
+
+	public StreamWriter getStreamwriter() {
+		return streamwriter;
+	}
+
+	public Connection(StreamReader streamReader,
+			StreamWriter streamWriter) {
+		this.streamReader = streamReader;
+		this.streamwriter = streamwriter;
+	}
+
 }

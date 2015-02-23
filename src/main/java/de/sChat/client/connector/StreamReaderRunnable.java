@@ -7,7 +7,7 @@ import java.io.InputStreamReader;
 import java.util.LinkedList;
 import java.util.Queue;
 
-public class StreamReaderRunnable implements Runnable {
+public class StreamReaderRunnable implements Runnable, StreamReader {
 	private InputStream is;
 	private Queue<String> que = new LinkedList<String>();
 
@@ -46,10 +46,18 @@ public class StreamReaderRunnable implements Runnable {
 		que.add(s);
 	}
 
+	/* (non-Javadoc)
+	 * @see de.sChat.client.connector.StreamReader#newIncomingLine()
+	 */
+	@Override
 	public boolean newIncomingLine() {
 		return que.size() == 0;
 	}
 
+	/* (non-Javadoc)
+	 * @see de.sChat.client.connector.StreamReader#getNewLine()
+	 */
+	@Override
 	public synchronized String getNewLine() {
 		return que.poll();
 	}
