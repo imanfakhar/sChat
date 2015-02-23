@@ -11,8 +11,4 @@ public class ClientConnectionOpendEvent extends Event {
 		this.handlerRunnable = handlerRunnable;
 	}
 
-	public HandlerRunnable getHandlerRunnable() {
-		return handlerRunnable;
-	}
-
 }

@@ -1,5 +1,3 @@
-package de.sChat.server.chatserver;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -8,6 +6,7 @@ import java.net.Socket;
 
 import de.joshuaschnabel.framework.eventbus.bus.EventBus;
 import de.joshuaschnabel.framework.eventbus.event.Handler;
+import de.sChat.server.chatserver.ChatServer;
 import de.sChat.server.chatserver.event.ClientConnectionClosedEvent;
 import de.sChat.server.chatserver.event.IncommingMessageEvent;
 import de.sChat.server.chatserver.event.OutGoingMessageEvent;
@@ -17,13 +16,14 @@ import de.sChat.server.chatserver.message.MessageParser;
 public class HandlerRunnable implements Runnable {
 	private PrintWriter out;
 	private Socket acceptedClient;
-	private EventBus bus;
+	private EventBus eventbus;
 	private String name = null;
 	private BufferedReader reader;
 
-	public HandlerRunnable(Socket acceptedClient, EventBus bus) throws IOException {
+	public HandlerRunnable(Socket acceptedClient, EventBus eventbus)
+			throws IOException {
 		this.acceptedClient = acceptedClient;
-		this.bus = bus;
+		this.eventbus = eventbus;
 		out = new PrintWriter(acceptedClient.getOutputStream(), true);
 
 	}
@@ -37,6 +37,7 @@ public class HandlerRunnable implements Runnable {
 
 	public void run() {
 		try {
+
 			while (!out.checkError()) {
 				reader = new BufferedReader(new InputStreamReader(acceptedClient.getInputStream()));
 				handleConnection();
@@ -55,17 +56,19 @@ public class HandlerRunnable implements Runnable {
 		}
 	}
 
+
 	private void handleConnection() throws IOException {
 		String input = null;
-		while (reader.ready() && !acceptedClient.isClosed()) {
+		while (reader.ready()) {
 			input = reader.readLine();
 		}
-		if (input != null) {
-			bus.publishSync(new IncommingMessageEvent(MessageParser.parseMessage(input)));
+		if (input != null) 
+		{
+			eventbus.publishSync(new IncommingMessageEvent(MessageParser.parseMessage(input)));
 		}
 		if(acceptedClient.isClosed())
 		{
-			bus.publishSync(new ClientConnectionClosedEvent(this));
+			eventbus.publishSync(new ClientConnectionClosedEvent(this));
 		}
 	}
 }

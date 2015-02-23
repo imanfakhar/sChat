@@ -28,7 +28,7 @@ public class ChatServer {
 		Thread thread = new Thread(new AcceptRunnable(server, eventbus));
 		thread.start();
 		System.out.println("Server started @ "+port);
-		//createClient("",1234);
+		createClient("",1234);
 	}
 
 	private void createClient(String address, int i) throws UnknownHostException, IOException {
