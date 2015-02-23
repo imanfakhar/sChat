@@ -5,20 +5,17 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 import de.joshuaschnabel.framework.eventbus.bus.EventBus;
-import de.joshuaschnabel.framework.eventbus.bus.EventBusException;
 import de.sChat.server.chatserver.event.ClientConnectionOpendEvent;
 
 public class AcceptRunnable implements Runnable {
 
 	private ServerSocket server;
 	private EventBus bus;
-	private ChatServer chatserver;
 
 
-	public AcceptRunnable(ServerSocket server, EventBus bus, ChatServer chatserver) {
+	public AcceptRunnable(ServerSocket server, EventBus bus) {
 		this.server = server;
 		this.bus = bus;
-		this.chatserver = chatserver;
 	}
 
 	@Override

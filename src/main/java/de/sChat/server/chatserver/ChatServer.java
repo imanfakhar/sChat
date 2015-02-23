@@ -20,7 +20,7 @@ public class ChatServer {
 	public ChatServer(Integer port) throws IOException, EventBusException {
 		eventbus.subscribe(this);
 		ServerSocket server = new ServerSocket(port.intValue());
-		Thread thread = new Thread(new AcceptRunnable(server, eventbus, this));
+		Thread thread = new Thread(new AcceptRunnable(server, eventbus));
 		thread.start();
 		System.out.println("Server started @ "+port);
 	}
