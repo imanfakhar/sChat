@@ -1,17 +1,17 @@
 package de.sChat.client;
 
-import de.sChat.client.view.WindowFactory;
-import de.sChat.client.view.chat.ChatWindow;
+import de.sChat.client.view.WindowFactoryAndDrecorator;
 import de.sChat.client.view.chat.manageConnection.ManagerWindow;
 
 public class Client {
 	public Client() {
-		ManagerWindow managerWindow = new WindowFactory()
-				.getDefaultManagerWindow();
+		ManagerWindow managerWindow = new ManagerWindow();
+		ClientStarterListener listener = new ClientStarterListener(
+				managerWindow);
+		new WindowFactoryAndDrecorator().addDefaultItemsToManagerWindow(
+				listener, managerWindow);
 		managerWindow.publish();
 
-		ChatWindow window = new WindowFactory().getDefaultChatWindow();
-		window.publish();
 	}
 
 	public static void main(String[] args) {

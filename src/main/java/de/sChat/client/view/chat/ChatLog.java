@@ -5,11 +5,25 @@ import java.awt.Component;
 
 import javax.swing.JLabel;
 
-public class ChatLog implements WindowComponent {
-	private JLabel label = new JLabel();
+import de.sChat.client.connector.StreamReader;
 
-	public ChatLog() {
+public class ChatLog implements WindowComponent {
+	private JLabel label = new JLabel("<html>");
+
+	public ChatLog(StreamReader streamReader) {
 		label.setBackground(Color.white);
+		Thread updaterThread = new Thread(new ChatLogUpdaterRunnable(
+				streamReader, this));
+		updaterThread.start();
+
+	}
+
+	public void addLine(String newLine) {
+		System.out.println("Schreibe neue Zeile ins fenster: " + newLine);
+		String text = label.getText();
+		text += "<p>";
+		text += newLine;
+		label.setText(text);
 	}
 
 	@Override

@@ -38,4 +38,8 @@ public class ManagerWindow {
 		window.pack();
 		window.setVisible(true);
 	}
+
+	public void dispose() {
+		window.dispose();
+	}
 }
