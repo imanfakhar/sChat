@@ -17,13 +17,14 @@ import de.sChat.server.chatserver.message.Message;
 import de.sChat.server.chatserver.message.MessageParser;
 
 public class ChatServer {
-	
+
 	EventBus eventbus = new EventBus();
 	private Vector<HandlerRunnable> listeMitThreads = new Vector<HandlerRunnable>();
-	
+
 	public ChatServer(Integer port) throws IOException, EventBusException {
 		System.out.println(MessageParser.parseMessage(new Message("Test", "Hallo du!")));
 		eventbus.subscribe(this);
+
 		ServerSocket server = new ServerSocket(port.intValue());
 		Thread thread = new Thread(new AcceptRunnable(server, eventbus));
 		thread.start();
@@ -35,23 +36,22 @@ public class ChatServer {
 		HandlerRunnable newHandler = new HandlerRunnable(new Socket(address, i), eventbus);
 		eventbus.publishSync(new ClientConnectionOpendEvent(newHandler));
 	}
-
+	
 	@Handler
-	public void incomingMessage(IncommingMessageEvent event) {
-		System.out.println(event.getMsg());
+	public void incommingMessage(IncommingMessageEvent event) {
 		eventbus.publishSync(new OutGoingMessageEvent(event.getMsg()));
 	}
-	
-	@Handler
-	public void clientLeft(ClientConnectionClosedEvent event) {
-		listeMitThreads.remove(event.getHandlerRunnable());
-	}
-	
+
 	@Handler
 	public void addClient(ClientConnectionOpendEvent event) throws EventBusException {
 		eventbus.subscribe(event.getHandlerRunnable());
 		Thread thread = new Thread(event.getHandlerRunnable());
 		listeMitThreads.add(event.getHandlerRunnable());
 		thread.start();
+	}
+
+	@Handler
+	public void addClient(ClientConnectionClosedEvent event) {
+		listeMitThreads.remove(event.getHandlerRunnable());
 	}
 }

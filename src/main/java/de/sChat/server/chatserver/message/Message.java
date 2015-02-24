@@ -1,7 +1,7 @@
 package de.sChat.server.chatserver.message;
 
 public class Message {
-	
+
 	MessageData data;
 	String type;
 	

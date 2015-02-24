@@ -14,8 +14,8 @@ public class AcceptRunnable implements Runnable {
 
 
 	public AcceptRunnable(ServerSocket server, EventBus bus) {
-		this.server = server;
 		this.bus = bus;
+		this.server = server;
 	}
 
 	@Override
