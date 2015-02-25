@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ivy-module version="2.0" xmlns:m="http://ant.apache.org/ivy/maven">
-  <info organisation="" module="sChat" revision="1.0" status="integration" publication="20150211143144">
+  <info organisation="" module="sChat" revision="1.0" status="integration" publication="20150223190838">
     <description/>
   </info>
   <configurations>
@@ -16,6 +16,7 @@
   </publications>
   <dependencies>
     <dependency org="org.eclipse.jetty" name="jetty-server" rev="9.2.+" conf="compile-&gt;default"/>
+    <dependency org="" name="jsEventBus" rev="" conf="compile-&gt;default"/>
     <dependency org="junit" name="junit" rev="4.+" conf="testCompile-&gt;default"/>
     <dependency org="org.mockito" name="mockito-core" rev="1.+" conf="testCompile-&gt;default"/>
   </dependencies>
