@@ -6,6 +6,8 @@ import java.io.PrintWriter;
 import java.util.LinkedList;
 import java.util.Queue;
 
+import de.sChat.client.Message;
+
 public class StreamWriterRunnable implements Runnable, StreamWriter {
 
 	private PrintWriter printWriter;
@@ -29,11 +31,11 @@ public class StreamWriterRunnable implements Runnable, StreamWriter {
 
 			BufferedWriter writer = new BufferedWriter(printWriter);
 			try {
+				System.out.println("writing: " + message);
 				writer.write(message);
 				writer.newLine();
 				writer.flush();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		} else {
@@ -50,8 +52,8 @@ public class StreamWriterRunnable implements Runnable, StreamWriter {
 		}
 	}
 
-	public synchronized void pushMessage(String message) {
-		outgoingQueue.add(message);
+	public synchronized void pushMessage(Message message) {
+		outgoingQueue.add(message.getJSONString());
 	}
 
 	private synchronized String getNextMessage() {

@@ -1,10 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
+	<classpathentry kind="output" path="bin"/>
 	<classpathentry kind="src" path="src/main/java"/>
 	<classpathentry kind="src" path="src/test/java"/>
-	<classpathentry exported="true" kind="con" path="org.springsource.ide.eclipse.gradle.classpathcontainer"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="libs/jsEventBus.jar"/>
-	<classpathentry kind="output" path="bin"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER" exported="true"/>
+	<classpathentry sourcepath="C:/Users/xce35h4/.gradle/caches/modules-2/files-2.1/org.eclipse.jetty/jetty-server/9.2.9.v20150224/af4baf159b77c1d23fec8accf2a84f3f85def2d4/jetty-server-9.2.9.v20150224-sources.jar" kind="lib" path="C:/Users/xce35h4/.gradle/caches/modules-2/files-2.1/org.eclipse.jetty/jetty-server/9.2.9.v20150224/d30a52e992c3484569f58763f55097a1da3202ee/jetty-server-9.2.9.v20150224.jar" exported="true"/>
+	<classpathentry kind="lib" path="R:/sChat/libs/jsEventBus.jar" exported="true"/>
+	<classpathentry sourcepath="C:/Users/xce35h4/.gradle/caches/modules-2/files-2.1/junit/junit/4.12/a6c32b40bf3d76eca54e3c601e5d1470c86fcdfa/junit-4.12-sources.jar" kind="lib" path="C:/Users/xce35h4/.gradle/caches/modules-2/files-2.1/junit/junit/4.12/2973d150c0dc1fefe998f834810d68f278ea58ec/junit-4.12.jar" exported="true"/>
+	<classpathentry sourcepath="C:/Users/xce35h4/.gradle/caches/modules-2/files-2.1/org.mockito/mockito-core/1.10.19/8269667b73d9616600359a9b0ba1b1c7d0cf7a97/mockito-core-1.10.19-sources.jar" kind="lib" path="C:/Users/xce35h4/.gradle/caches/modules-2/files-2.1/org.mockito/mockito-core/1.10.19/e8546f5bef4e061d8dd73895b4e8f40e3fe6effe/mockito-core-1.10.19.jar" exported="true"/>
+	<classpathentry sourcepath="C:/Users/xce35h4/.gradle/caches/modules-2/files-2.1/javax.servlet/javax.servlet-api/3.1.0/ab3976d4574c48d22dc1abf6a9e8bd0fdf928223/javax.servlet-api-3.1.0-sources.jar" kind="lib" path="C:/Users/xce35h4/.gradle/caches/modules-2/files-2.1/javax.servlet/javax.servlet-api/3.1.0/3cd63d075497751784b2fa84be59432f4905bf7c/javax.servlet-api-3.1.0.jar" exported="true"/>
+	<classpathentry sourcepath="C:/Users/xce35h4/.gradle/caches/modules-2/files-2.1/org.eclipse.jetty/jetty-http/9.2.9.v20150224/91d0d2f15940daa6c16104d100c25c221aa39ba6/jetty-http-9.2.9.v20150224-sources.jar" kind="lib" path="C:/Users/xce35h4/.gradle/caches/modules-2/files-2.1/org.eclipse.jetty/jetty-http/9.2.9.v20150224/8b30ddc8304df24a36efbfa267acc24b7403b692/jetty-http-9.2.9.v20150224.jar" exported="true"/>
+	<classpathentry sourcepath="C:/Users/xce35h4/.gradle/caches/modules-2/files-2.1/org.eclipse.jetty/jetty-io/9.2.9.v20150224/c4778fb3659fe82ff819a31cdc339c72ee5b3ddc/jetty-io-9.2.9.v20150224-sources.jar" kind="lib" path="C:/Users/xce35h4/.gradle/caches/modules-2/files-2.1/org.eclipse.jetty/jetty-io/9.2.9.v20150224/6a4a23ee9decf2762d052bc2ae0501c08cc9023/jetty-io-9.2.9.v20150224.jar" exported="true"/>
+	<classpathentry sourcepath="C:/Users/xce35h4/.gradle/caches/modules-2/files-2.1/org.hamcrest/hamcrest-core/1.3/1dc37250fbc78e23a65a67fbbaf71d2e9cbc3c0b/hamcrest-core-1.3-sources.jar" kind="lib" path="C:/Users/xce35h4/.gradle/caches/modules-2/files-2.1/org.hamcrest/hamcrest-core/1.3/42a25dc3219429f0e5d060061f71acb49bf010a0/hamcrest-core-1.3.jar" exported="true"/>
+	<classpathentry sourcepath="C:/Users/xce35h4/.gradle/caches/modules-2/files-2.1/org.objenesis/objenesis/2.1/611a57d836e2c320d59f9851d4ad587f3c8472e/objenesis-2.1-sources.jar" kind="lib" path="C:/Users/xce35h4/.gradle/caches/modules-2/files-2.1/org.objenesis/objenesis/2.1/87c0ea803b69252868d09308b4618f766f135a96/objenesis-2.1.jar" exported="true"/>
+	<classpathentry sourcepath="C:/Users/xce35h4/.gradle/caches/modules-2/files-2.1/org.eclipse.jetty/jetty-util/9.2.9.v20150224/43f780036463fb5946886721fc0a285f24edfbba/jetty-util-9.2.9.v20150224-sources.jar" kind="lib" path="C:/Users/xce35h4/.gradle/caches/modules-2/files-2.1/org.eclipse.jetty/jetty-util/9.2.9.v20150224/b5fb774a02158e9f66fed949581159a8d0dfcbe1/jetty-util-9.2.9.v20150224.jar" exported="true"/>
 </classpath>

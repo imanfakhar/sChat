@@ -14,9 +14,9 @@ public class ChatLogUpdaterRunnable implements Runnable {
 	@Override
 	public void run() {
 		while (!isCloseRequested()) {
-			if (streamReader.newIncomingLine()) {
+			if (streamReader.newIncomingMessage()) {
 				System.out.println("Neue zeile gefunden.");
-				chatLog.addLine(streamReader.getNewLine());
+				chatLog.addMessage(streamReader.getNewMessage());
 			} else {
 				try {
 					Thread.sleep(100);
