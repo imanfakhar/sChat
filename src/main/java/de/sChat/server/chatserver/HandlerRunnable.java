@@ -6,55 +6,42 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 
-class HandlerRunnable implements Runnable {
+import de.joshuaschnabel.framework.eventbus.bus.EventBus;
+import de.joshuaschnabel.framework.eventbus.event.Handler;
+import de.sChat.server.chatserver.event.ClientConnectionClosedEvent;
+import de.sChat.server.chatserver.event.IncommingMessageEvent;
+import de.sChat.server.chatserver.event.OutGoingMessageEvent;
+import de.sChat.server.chatserver.message.Message;
+import de.sChat.server.chatserver.message.MessageParser;
+
+public class HandlerRunnable implements Runnable {
+
 	private PrintWriter out;
 	private Socket acceptedClient;
-	private ChatServer server;
+	private EventBus eventbus;
+
 	private String name = null;
 	private BufferedReader reader;
 
-	public HandlerRunnable(Socket acceptedClient, ChatServer server)
-			throws IOException {
+	public HandlerRunnable(Socket acceptedClient, EventBus eventbus) throws IOException 
+	{
 		this.acceptedClient = acceptedClient;
-		this.server = server;
+		this.eventbus = eventbus;
 		out = new PrintWriter(acceptedClient.getOutputStream(), true);
-
 	}
 
-	public synchronized void outgoingMessage(String name, String input) {
-		if (name != null && !name.equals(this.name)) {
-			out.print(getEscapedName());
-			out.println(name + ":" + input);
-			printPrompt();
-		}
-		if (name.equals(this.name)) {
-			printPrompt();
-		}
-	}
-
-	private String getEscapedName() {
-		String esc = "";
-		for (int i = 0; i < getPrompt().length(); i++) {
-			esc += "\b";
-		}
-		return esc;
+	@Handler
+	public void outgoingMessage(OutGoingMessageEvent event) 
+	{
+		Message msg = event.getMsg();
+		if(!msg.getName().equals(name))
+			out.println(msg.getName() + ":" + msg.getNachricht());
 	}
 
 	public void run() {
 		try {
-			out.println("Bitte geben Sie ihren Nutzername an");
-			reader = new BufferedReader(new InputStreamReader(
-					acceptedClient.getInputStream()));
-			this.name = reader.readLine();
-			out.println("Vielen Dank, " + name + "!");
-			printPrompt();
-			server.incomingMessage("ROBOT", ">>>>>>>>>>>>>>>>[" + name
-					+ "] has entered the Room");
-			System.out.println(this.toString() + " heiﬂt jetzt : [" + name
-					+ "]");
 			while (!out.checkError()) {
-				reader = new BufferedReader(new InputStreamReader(
-						acceptedClient.getInputStream()));
+				reader = new BufferedReader(new InputStreamReader(acceptedClient.getInputStream()));
 				handleConnection();
 			}
 		} catch (IOException e) {
@@ -69,16 +56,6 @@ class HandlerRunnable implements Runnable {
 			}
 
 		}
-		server.incomingMessage("ROBOT", "<<<<<<<<<<<<<<<<[" + name
-				+ "] has left the Room");
-	}
-
-	private void printPrompt() {
-		out.print(getPrompt());
-	}
-
-	private String getPrompt() {
-		return name + ":";
 	}
 
 	private void handleConnection() throws IOException {
@@ -86,8 +63,13 @@ class HandlerRunnable implements Runnable {
 		while (reader.ready()) {
 			input = reader.readLine();
 		}
-		if (input != null) {
-			server.incomingMessage(name, input);
+		if (input != null) 
+		{
+			eventbus.publishSync(new IncommingMessageEvent(MessageParser.parseMessage(input)));
+		}
+		if(acceptedClient.isClosed())
+		{
+			eventbus.publishSync(new ClientConnectionClosedEvent(this));
 		}
 	}
 }
