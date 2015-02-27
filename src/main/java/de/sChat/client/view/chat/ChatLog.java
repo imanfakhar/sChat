@@ -13,6 +13,7 @@ import de.sChat.client.connector.StreamReader;
 public class ChatLog implements WindowComponent {
 	private JLabel label = new JLabel("<html>");
 	private JPanel panel = new JPanel(new GridLayout(1, 1));
+	private ChatColorManager colorManager = new ChatColorManager();
 
 	public ChatLog(StreamReader streamReader) {
 		label.setOpaque(false);
@@ -26,8 +27,8 @@ public class ChatLog implements WindowComponent {
 
 	public void addMessage(Message message) {
 		String text = label.getText();
-		text += "<p Color=\"red\">";
-
+		text += "<p Color=\""
+				+ colorManager.getColorForPerson(message.getSender()) + "\">";
 		text += message.getMessage();// TODO
 		label.setText(text);
 	}
