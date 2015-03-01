@@ -14,13 +14,13 @@
     </setting> 
   </setting>  
   <setting name="Application_window-id"> 
-    <setting name="window_x" value="0"/>  
-    <setting name="window_y" value="0"/>  
+    <setting name="window_x" value="342"/>  
+    <setting name="window_y" value="38"/>  
     <setting name="window_width" value="800"/>  
     <setting name="window_height" value="856"/>  
     <setting name="extended-state" value="0"/> 
   </setting>  
-  <setting name="SinglePaneUIInstance_splitter-id">
-    <setting name="divider_location" value="456"/>
-  </setting>
+  <setting name="SinglePaneUIInstance_splitter-id"> 
+    <setting name="divider_location" value="456"/> 
+  </setting> 
 </root>

@@ -1,16 +1,23 @@
 package de.sChat.client;
 
+import json_parser.data_types.JSONObject;
+import json_parser.data_types.JSONString;
+
 public class Message {
 
 	private String sender;
 	private String message;
 
 	public Message(String jsonString) {
-		String name = jsonString.substring(jsonString.indexOf("sender\":\""));
-		this.sender = name.substring(0, name.indexOf("\""));
-		String message = jsonString.substring(jsonString
-				.indexOf("message\":\""));
-		this.message = message.substring(0, message.indexOf("\""));
+		JSONObject jsonMessage = new JSONObject();
+		jsonMessage.parse(jsonString);
+		JSONObject dataObject = (JSONObject) jsonMessage.getValue("data");
+		JSONString jsonSender = (JSONString) dataObject.getValue("sender");
+		this.sender = jsonSender.getValue();
+
+		JSONString jsonMessageData = (JSONString) dataObject
+				.getValue("message");
+		this.message = jsonMessageData.getValue();
 	}
 
 	public Message(String sender, String message) {
@@ -27,7 +34,20 @@ public class Message {
 	}
 
 	public String getJSONString() {
-		return "{\"type\":\"message\" \"data\":{\"sender\":\"" + sender
-				+ "\" \"message\":\"" + message + "\"}}";
+		JSONObject jsonMessage = new JSONObject();
+
+		JSONString messageString = new JSONString("message");
+		jsonMessage.addValue("type", messageString);
+
+		JSONObject dataObject = new JSONObject();
+
+		JSONString senderString = new JSONString(sender);
+		dataObject.addValue("sender", senderString);
+		JSONString messageDataString = new JSONString(message);
+		dataObject.addValue("message", messageDataString);
+
+		jsonMessage.addValue("data", dataObject);
+
+		return jsonMessage.print();
 	}
 }
