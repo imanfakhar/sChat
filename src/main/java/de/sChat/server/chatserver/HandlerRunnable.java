@@ -14,7 +14,7 @@ import de.sChat.server.chatserver.event.OutGoingMessageEvent;
 import de.sChat.server.chatserver.message.Message;
 import de.sChat.server.chatserver.message.MessageParser;
 
-public class HandlerRunnable implements Runnable {
+public class HandlerRunnable extends ClientRunnable{
 
 	private PrintWriter out;
 	private Socket acceptedClient;

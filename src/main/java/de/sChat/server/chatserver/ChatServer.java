@@ -19,15 +19,15 @@ import de.sChat.server.chatserver.message.MessageParser;
 public class ChatServer {
 
 	EventBus eventbus = new EventBus();
-	private Vector<HandlerRunnable> listeMitThreads = new Vector<HandlerRunnable>();
+	private Vector<ClientRunnable> listeMitThreads = new Vector<ClientRunnable>();
 
 	public ChatServer(Integer port) throws IOException, EventBusException {
 		System.out.println(MessageParser.parseMessage(new Message("Test", "Hallo du!")));
 		eventbus.subscribe(this);
-
 		ServerSocket server = new ServerSocket(port.intValue());
 		Thread thread = new Thread(new AcceptRunnable(server, eventbus));
 		thread.start();
+		eventbus.publishSync(new ClientConnectionOpendEvent(new UDPRunnable(eventbus, port)));
 		System.out.println("Server started @ "+port);
 	}
 

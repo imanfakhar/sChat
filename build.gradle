@@ -22,7 +22,7 @@ repositories {
 }
 
 dependencies {
-	compile name: 'jsEventBus'
+	compile name: 'jsEventBus-1.0'
 	compile name: 'JSON_Parser_for_JAVA-1.0'
 	compile group:'com.thoughtworks.xstream', name:'xstream', version: '1.4.7'
 	compile group:'stax', name:'stax-api', version:'1.0.1'
