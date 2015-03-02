@@ -1,4 +1,4 @@
-package de.sChat.server.chatserver;
+package de.sChat.server.tcpServer;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -8,11 +8,11 @@ import java.net.Socket;
 
 import de.joshuaschnabel.framework.eventbus.bus.EventBus;
 import de.joshuaschnabel.framework.eventbus.event.Handler;
-import de.sChat.server.chatserver.event.ClientConnectionClosedEvent;
-import de.sChat.server.chatserver.event.IncommingMessageEvent;
-import de.sChat.server.chatserver.event.OutGoingMessageEvent;
-import de.sChat.server.chatserver.message.Message;
-import de.sChat.server.chatserver.message.MessageParser;
+import de.sChat.server.shared.events.IncommingMessageEvent;
+import de.sChat.server.shared.events.OutGoingMessageEvent;
+import de.sChat.server.shared.messages.Message;
+import de.sChat.server.shared.messages.MessageParser;
+import de.sChat.server.tcpServer.events.ClientConnectionClosedEvent;
 
 public class HandlerRunnable extends ClientRunnable{
 

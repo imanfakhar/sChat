@@ -1,4 +1,4 @@
-package de.sChat.server.chatserver.message;
+package de.sChat.server.shared.messages;
 
 public class MessageData {
 

@@ -1,7 +1,7 @@
-package de.sChat.server.chatserver;
+package de.sChat.server.tcpServer;
 
 import de.joshuaschnabel.framework.eventbus.event.Handler;
-import de.sChat.server.chatserver.event.OutGoingMessageEvent;
+import de.sChat.server.shared.events.OutGoingMessageEvent;
 
 public abstract class ClientRunnable implements Runnable{
 

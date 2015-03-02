@@ -1,4 +1,4 @@
-package de.sChat.server.chatserver;
+package de.sChat.server.tcpServer;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -9,25 +9,24 @@ import java.util.Vector;
 import de.joshuaschnabel.framework.eventbus.bus.EventBus;
 import de.joshuaschnabel.framework.eventbus.bus.EventBusException;
 import de.joshuaschnabel.framework.eventbus.event.Handler;
-import de.sChat.server.chatserver.event.ClientConnectionClosedEvent;
-import de.sChat.server.chatserver.event.ClientConnectionOpendEvent;
-import de.sChat.server.chatserver.event.IncommingMessageEvent;
-import de.sChat.server.chatserver.event.OutGoingMessageEvent;
-import de.sChat.server.chatserver.message.Message;
-import de.sChat.server.chatserver.message.MessageParser;
+import de.sChat.server.shared.events.IncommingMessageEvent;
+import de.sChat.server.shared.events.OutGoingMessageEvent;
+import de.sChat.server.shared.messages.Message;
+import de.sChat.server.shared.messages.MessageParser;
+import de.sChat.server.tcpServer.events.ClientConnectionClosedEvent;
+import de.sChat.server.tcpServer.events.ClientConnectionOpendEvent;
 
-public class ChatServer {
+public class TCPServer {
 
-	EventBus eventbus = new EventBus();
 	private Vector<ClientRunnable> listeMitThreads = new Vector<ClientRunnable>();
+	private EventBus eventbus;
 
-	public ChatServer(Integer port) throws IOException, EventBusException {
-		System.out.println(MessageParser.parseMessage(new Message("Test", "Hallo du!")));
+	public TCPServer(EventBus eventbus, Integer port) throws IOException, EventBusException {
+		this.eventbus = eventbus;
 		eventbus.subscribe(this);
 		ServerSocket server = new ServerSocket(port.intValue());
 		Thread thread = new Thread(new AcceptRunnable(server, eventbus));
 		thread.start();
-		eventbus.publishSync(new ClientConnectionOpendEvent(new UDPRunnable(eventbus, port)));
 		System.out.println("Server started @ "+port);
 	}
 

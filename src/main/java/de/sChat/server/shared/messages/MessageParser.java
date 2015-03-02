@@ -1,4 +1,4 @@
-package de.sChat.server.chatserver.message;
+package de.sChat.server.shared.messages;
 
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.json.JettisonMappedXmlDriver;

@@ -1,8 +1,8 @@
-package de.sChat.server.chatserver.event;
+package de.sChat.server.tcpServer.events;
 
 import de.joshuaschnabel.framework.eventbus.event.Event;
-import de.sChat.server.chatserver.ClientRunnable;
-import de.sChat.server.chatserver.HandlerRunnable;
+import de.sChat.server.tcpServer.ClientRunnable;
+import de.sChat.server.tcpServer.HandlerRunnable;
 
 public class ClientConnectionOpendEvent extends Event {
 

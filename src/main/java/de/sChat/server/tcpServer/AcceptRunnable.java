@@ -1,11 +1,11 @@
-package de.sChat.server.chatserver;
+package de.sChat.server.tcpServer;
 
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
 import de.joshuaschnabel.framework.eventbus.bus.EventBus;
-import de.sChat.server.chatserver.event.ClientConnectionOpendEvent;
+import de.sChat.server.tcpServer.events.ClientConnectionOpendEvent;
 
 public class AcceptRunnable implements Runnable {
 

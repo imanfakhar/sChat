@@ -1,7 +1,7 @@
-package de.sChat.server.chatserver.event;
+package de.sChat.server.shared.events;
 
 import de.joshuaschnabel.framework.eventbus.event.Event;
-import de.sChat.server.chatserver.message.Message;
+import de.sChat.server.shared.messages.Message;
 
 public class IncommingMessageEvent extends Event {
 	
