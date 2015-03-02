@@ -1,30 +1,15 @@
 package de.sChat.server.shared.messages;
 
 public class Message {
+	
+	private Object sender = null;
 
-	MessageData data;
-	String type;
-	
-	public Message(String name, String nachricht) {
-		this(name,nachricht,"message");
-	}
-	
-	public Message(String name, String nachricht, String type) {
-		data = new MessageData(name,nachricht);
-		this.type = type;
-	}
-	
-	public String getName() {
-		return data.getName();
-	}
-	
-	public String getNachricht() {
-		return data.getNachricht();
+	public Object getSender() {
+		return sender;
 	}
 
-	public String getType() {
-		return type;
+	public void setSender(Object sender) {
+		this.sender = sender;
 	}
-
 	
 }

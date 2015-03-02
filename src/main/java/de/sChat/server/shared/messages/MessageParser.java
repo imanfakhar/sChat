@@ -1,32 +1,37 @@
 package de.sChat.server.shared.messages;
 
-import com.thoughtworks.xstream.XStream;
-import com.thoughtworks.xstream.io.json.JettisonMappedXmlDriver;
+import json_parser.data_types.JSONObject;
+import json_parser.data_types.JSONString;
 
 public class MessageParser {
 	
-	private static XStream xstream;
-
-	private static XStream getXStream()
-	{
-        xstream = new XStream(new JettisonMappedXmlDriver());
-        xstream.setMode(XStream.NO_REFERENCES);
-        xstream.alias("data", MessageData.class);
-        xstream.alias("msg", Message.class);
-		return xstream;
-	}
-	
 	public static Message parseMessage(String message)
 	{
-		XStream xstream = getXStream();
-		return (Message) xstream.fromXML("{\"msg\":"+message+"}");
+		JSONObject jsonMessage = new JSONObject();
+		jsonMessage.parse(message);
+		String type = ((JSONString) jsonMessage.getValue("type")).getValue();
+		switch (type) {
+			case "message":
+				JSONObject dataObject = (JSONObject) jsonMessage.getValue("data");
+				String nachricht = ((JSONString) dataObject.getValue("message")).getValue();
+				String name = ((JSONString) dataObject.getValue("name")).getValue();
+				return new TextMessage(name, nachricht);
+		}
+		return null;
 	}
 
 	public static String parseMessage(Message message) {
-		String tmp = getXStream().toXML(message);
-		tmp = tmp.replace("{\"msg\":", "");
-		tmp = tmp.substring(0, tmp.length()-1);
-		return tmp;
+		if(message instanceof TextMessage)
+		{
+			JSONObject txtMessage = new JSONObject();
+			txtMessage.addValue("type", new JSONString("message"));
+			JSONObject dataObject = new JSONObject();
+			txtMessage.addValue("data", dataObject);
+			dataObject.addValue("message", new JSONString(((TextMessage) message).getNachricht()));
+			dataObject.addValue("name", new JSONString(((TextMessage) message).getName()));
+			return txtMessage.print();
+		}
+		return "";
 	}
 
 }

@@ -1,11 +1,11 @@
 package de.sChat.server.shared.messages;
 
-public class MessageData {
+public class TextMessage extends Message {
 
 	private String message;
 	private String name;
 
-	public MessageData(String name, String nachricht) {
+	public TextMessage(String name, String nachricht) {
 		this.name = name;
 		this.message = nachricht;
 	}

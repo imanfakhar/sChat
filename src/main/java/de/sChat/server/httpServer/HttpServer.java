@@ -8,14 +8,10 @@ import org.eclipse.jetty.server.handler.ResourceHandler;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 
-import de.joshuaschnabel.framework.eventbus.bus.EventBus;
-
 public class HttpServer {
 	
-	public HttpServer(EventBus bus, Integer httpport) {
-		EventBusWrapper.setBus(bus);
-		
-        ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
+	public HttpServer(Integer httpport) {
+		ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
         context.setContextPath("/");
  
         Server jettyServer = new Server(httpport);
@@ -31,7 +27,7 @@ public class HttpServer {
         ResourceHandler resource_handler = new ResourceHandler();
         resource_handler.setDirectoriesListed(false);
         resource_handler.setWelcomeFiles(new String[]{ "index.html" });
-        resource_handler.setResourceBase("./src/webapp/resources/staticContent");
+        resource_handler.setResourceBase("./src/test/resources/de/sChat/staticResources/");
         
         ContextHandler ctx = new ContextHandler("/my-files"); /* the server uri path */
         ctx.setHandler(resource_handler);

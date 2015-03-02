@@ -18,7 +18,7 @@ import de.sChat.server.tcpServer.events.ClientConnectionOpendEvent;
 
 public class TCPServer {
 
-	private Vector<ClientRunnable> listeMitThreads = new Vector<ClientRunnable>();
+	private Vector<HandlerRunnable> listeMitThreads = new Vector<HandlerRunnable>();
 	private EventBus eventbus;
 
 	public TCPServer(EventBus eventbus, Integer port) throws IOException, EventBusException {
@@ -37,7 +37,7 @@ public class TCPServer {
 	
 	@Handler
 	public void incommingMessage(IncommingMessageEvent event) {
-		eventbus.publishSync(new OutGoingMessageEvent(event.getMsg()));
+		eventbus.publishSync(new OutGoingMessageEvent());
 	}
 
 	@Handler

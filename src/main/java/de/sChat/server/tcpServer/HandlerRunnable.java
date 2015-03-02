@@ -5,23 +5,26 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.ArrayList;
 
 import de.joshuaschnabel.framework.eventbus.bus.EventBus;
 import de.joshuaschnabel.framework.eventbus.event.Handler;
 import de.sChat.server.shared.events.IncommingMessageEvent;
 import de.sChat.server.shared.events.OutGoingMessageEvent;
+import de.sChat.server.shared.messageHub.HubMessage;
+import de.sChat.server.shared.messageHub.MessageHubWrapper;
 import de.sChat.server.shared.messages.Message;
 import de.sChat.server.shared.messages.MessageParser;
 import de.sChat.server.tcpServer.events.ClientConnectionClosedEvent;
 
-public class HandlerRunnable extends ClientRunnable{
+public class HandlerRunnable implements Runnable{
 
 	private PrintWriter out;
 	private Socket acceptedClient;
 	private EventBus eventbus;
 
-	private String name = null;
 	private BufferedReader reader;
+	private long lastTimeStamp = 0;
 
 	public HandlerRunnable(Socket acceptedClient, EventBus eventbus) throws IOException 
 	{
@@ -33,9 +36,16 @@ public class HandlerRunnable extends ClientRunnable{
 	@Handler
 	public void outgoingMessage(OutGoingMessageEvent event) 
 	{
-		Message msg = event.getMsg();
-		if(!msg.getName().equals(name))
-			out.println(MessageParser.parseMessage(event.getMsg()));
+		ArrayList<HubMessage> list = MessageHubWrapper.getHub().getMessages(lastTimeStamp);
+		if(list.size() > 0)
+		{
+			lastTimeStamp = list.get(0).getTimestamp();
+			for (HubMessage hubMessage : list) {
+				Message msg = hubMessage.getMsg();
+				if(!(msg.getSender() == this))
+					out.println(MessageParser.parseMessage(msg));
+			}
+		}
 	}
 
 	public void run() {
@@ -65,7 +75,9 @@ public class HandlerRunnable extends ClientRunnable{
 		}
 		if (input != null) 
 		{
-			eventbus.publishSync(new IncommingMessageEvent(MessageParser.parseMessage(input)));
+			Message msg = MessageParser.parseMessage(input);
+			msg.setSender(this);
+			eventbus.publishSync(new IncommingMessageEvent(msg));
 		}
 		if(acceptedClient.isClosed())
 		{
