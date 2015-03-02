@@ -35,7 +35,7 @@ public class HandlerRunnable implements Runnable {
 	{
 		Message msg = event.getMsg();
 		if(!msg.getName().equals(name))
-			out.println(msg.getName() + ":" + msg.getNachricht());
+			out.println(MessageParser.parseMessage(event.getMsg()));
 	}
 
 	public void run() {

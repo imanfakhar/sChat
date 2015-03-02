@@ -29,10 +29,9 @@ public class ChatServer {
 		Thread thread = new Thread(new AcceptRunnable(server, eventbus));
 		thread.start();
 		System.out.println("Server started @ "+port);
-		//createClient("",1234);
 	}
 
-	private void createClient(String address, int i) throws UnknownHostException, IOException {
+	public void createClient(String address, int i) throws UnknownHostException, IOException {
 		HandlerRunnable newHandler = new HandlerRunnable(new Socket(address, i), eventbus);
 		eventbus.publishSync(new ClientConnectionOpendEvent(newHandler));
 	}
