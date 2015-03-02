@@ -5,6 +5,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JTextField;
 
+import de.sChat.client.Message;
 import de.sChat.client.connector.StreamWriter;
 
 public class SendButtonListener implements ActionListener {
@@ -20,7 +21,8 @@ public class SendButtonListener implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		System.out.println("Senden: " + textfield.getText());
-		writer.pushMessage(textfield.getText());
+		writer.pushMessage(new Message("KeinSender gesetzt", textfield
+				.getText()));// TODO
 		textfield.setText("");
 	}
 

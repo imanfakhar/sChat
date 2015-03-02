@@ -17,7 +17,7 @@ public class Connector {
 	public Connection connectWithName(String name)
 			throws NumberFormatException, IOException {
 		InetAddress serverAddress = InetAddress.getByName(ipAddress);
-		Socket socket = new Socket(serverAddress, new Integer(port).intValue());
+		Socket socket = new Socket(serverAddress, Integer.parseInt(port));
 		StreamReaderRunnable streamReader = new StreamReaderRunnable(
 				socket.getInputStream());
 		Thread streamReaderThread = new Thread(streamReader);

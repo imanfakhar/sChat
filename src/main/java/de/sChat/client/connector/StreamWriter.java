@@ -1,7 +1,9 @@
 package de.sChat.client.connector;
 
+import de.sChat.client.Message;
+
 public interface StreamWriter {
 
-	void pushMessage(String message);
+	void pushMessage(Message message);
 
 }

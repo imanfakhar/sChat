@@ -1,9 +1,11 @@
 package de.sChat.client.connector;
 
+import de.sChat.client.Message;
+
 public interface StreamReader {
 
-	boolean newIncomingLine();
+	boolean newIncomingMessage();
 
-	String getNewLine();
+	Message getNewMessage();
 
 }
