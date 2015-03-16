@@ -1,4 +1,4 @@
-package de.sChat.server.shared.events;
+package de.sChat.server.data.events;
 
 import de.joshuaschnabel.framework.eventbus.event.Event;
 

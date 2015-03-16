@@ -1,11 +1,13 @@
-package de.sChat.server.shared.messages;
+package de.sChat.server.data.messages.parser;
 
+import de.sChat.server.data.messages.InternMessage;
+import de.sChat.server.data.messages.TextMessage;
 import json_parser.data_types.JSONObject;
 import json_parser.data_types.JSONString;
 
 public class MessageParser {
 	
-	public static Message parseMessage(String message)
+	public static InternMessage parseMessage(String message)
 	{
 		JSONObject jsonMessage = new JSONObject();
 		jsonMessage.parse(message);
@@ -20,14 +22,14 @@ public class MessageParser {
 		return null;
 	}
 
-	public static String parseMessage(Message message) {
+	public static String parseMessage(InternMessage message) {
 		if(message instanceof TextMessage)
 		{
 			JSONObject txtMessage = new JSONObject();
 			txtMessage.addValue("type", new JSONString("message"));
 			JSONObject dataObject = new JSONObject();
 			txtMessage.addValue("data", dataObject);
-			dataObject.addValue("message", new JSONString(((TextMessage) message).getNachricht()));
+			dataObject.addValue("message", new JSONString(((TextMessage) message).getMessage()));
 			dataObject.addValue("name", new JSONString(((TextMessage) message).getName()));
 			return txtMessage.print();
 		}

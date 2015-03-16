@@ -1,21 +1,22 @@
 package de.sChat.server.httpServer;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
-import de.joshuaschnabel.framework.eventbus.bus.EventBus;
-import de.sChat.server.shared.events.IncommingMessageEvent;
-import de.sChat.server.shared.messageHub.HubMessage;
-import de.sChat.server.shared.messageHub.MessageHubWrapper;
-import de.sChat.server.shared.messages.MessageParser;
+import de.sChat.server.data.chatClient.ChatClient;
+import de.sChat.server.data.chatClient.ChatClientComperator;
+import de.sChat.server.data.dao.DaoChatClient;
+import de.sChat.server.data.events.IncommingMessageEvent;
+import de.sChat.server.data.messages.InternMessage;
+import de.sChat.server.data.messages.TextMessage;
+import de.sChat.server.data.messages.parser.MessageParser;
  
 @Path("/msg")
 public class MsgPoint {
@@ -24,13 +25,15 @@ public class MsgPoint {
     @Path("getMessage")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public String getMessage(@QueryParam("time") long time) {
+    public String getMessage(@QueryParam("time") long time, @QueryParam("name") String name) {
+    	DaoChatClient dao = new DaoChatClient(EntityManagerHolder.getEntityManager());
+    	ChatClient cc = dao.getChatClient(name);
     	String result = "[";
-    	ArrayList<HubMessage> messages = MessageHubWrapper.getHub().getMessages(time);
-    	for (HubMessage hubMessage : messages) {
+    	List<TextMessage> messages = ChatClientComperator.getSinceLastSeenMessages(cc.getMessages(), cc.getLastseen());
+    	for (TextMessage textMessage : messages) {
     		if(result.length() > 2)
     			result += ",";
-    		result += MessageParser.parseMessage(hubMessage.getMsg());
+    		result += MessageParser.parseMessage(textMessage);
 		}
     	return result + "]";
     }
@@ -40,7 +43,9 @@ public class MsgPoint {
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public String sendMessage(String msg) {
-    	MessageHubWrapper.getHub().publishIncommingMessage(MessageParser.parseMessage(msg));
+    	InternMessage message = MessageParser.parseMessage(msg);
+    	message.setSender(this);
+    	BusHolder.getBus().publishSync(new IncommingMessageEvent(message));
         return "{}";
     }
 }

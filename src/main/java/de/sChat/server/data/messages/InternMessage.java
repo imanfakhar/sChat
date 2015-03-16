@@ -1,6 +1,6 @@
-package de.sChat.server.shared.messages;
+package de.sChat.server.data.messages;
 
-public class Message {
+public class InternMessage {
 	
 	private Object sender = null;
 
