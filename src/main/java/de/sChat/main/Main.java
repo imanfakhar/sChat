@@ -1,9 +1,9 @@
 package de.sChat.main;
 
 import de.sChat.server.ChatServer;
-import de.sChat.server.shared.messages.Message;
-import de.sChat.server.shared.messages.MessageParser;
-import de.sChat.server.shared.messages.TextMessage;
+import de.sChat.server.data.messages.InternMessage;
+import de.sChat.server.data.messages.TextMessage;
+import de.sChat.server.data.messages.parser.MessageParser;
 
 public class Main {
 

@@ -1,5 +1,7 @@
 package de.sChat.server.httpServer;
 
+import javax.persistence.EntityManagerFactory;
+
 import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.handler.ContextHandler;
@@ -8,9 +10,15 @@ import org.eclipse.jetty.server.handler.ResourceHandler;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 
+import de.joshuaschnabel.framework.eventbus.bus.EventBus;
+
 public class HttpServer {
 	
-	public HttpServer(Integer httpport) {
+	public HttpServer(EventBus bus, EntityManagerFactory emf, Integer httpport) 
+	{
+		BusHolder.setBus(bus);
+		EntityManagerHolder.setEntityManager(emf.createEntityManager());
+		
 		ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
         context.setContextPath("/");
  
