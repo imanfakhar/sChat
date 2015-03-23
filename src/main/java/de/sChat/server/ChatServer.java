@@ -23,9 +23,9 @@ public class ChatServer {
 	{
 		emf = Persistence.createEntityManagerFactory("emf");
 		bus = new EventBus();
-		busadapter = new ChatClientBusAdapter(bus,emf);
-		this.tcp = new TCPServer(bus, emf, tcpport);
-		this.http = new HttpServer(bus, emf , httpport);
+		busadapter = new ChatClientBusAdapter(bus,emf.createEntityManager());
+		this.tcp = new TCPServer(bus, emf.createEntityManager(), tcpport);
+		this.http = new HttpServer(bus, emf.createEntityManager(), httpport);
 	}
 
 }

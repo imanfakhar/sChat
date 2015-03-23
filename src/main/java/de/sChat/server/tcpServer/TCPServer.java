@@ -6,6 +6,7 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.Vector;
 
+import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 
 import de.joshuaschnabel.framework.eventbus.bus.EventBus;
@@ -20,20 +21,20 @@ public class TCPServer {
 
 	private Vector<HandlerRunnable> listeMitThreads = new Vector<HandlerRunnable>();
 	private EventBus eventbus;
-	private EntityManagerFactory emf;
+	private EntityManager manager;
 
-	public TCPServer(EventBus eventbus, EntityManagerFactory emf, Integer port) throws IOException, EventBusException {
+	public TCPServer(EventBus eventbus, EntityManager manager, Integer port) throws IOException, EventBusException {
 		this.eventbus = eventbus;
-		this.emf = emf;
+		this.manager = manager;
 		eventbus.subscribe(this);
 		ServerSocket server = new ServerSocket(port.intValue());
-		Thread thread = new Thread(new AcceptRunnable(server, eventbus, emf));
+		Thread thread = new Thread(new AcceptRunnable(server, eventbus, manager));
 		thread.start();
 		System.out.println("Server started @ "+port);
 	}
 
 	public void createClient(String address, int i) throws UnknownHostException, IOException {
-		HandlerRunnable newHandler = new HandlerRunnable(new Socket(address, i), eventbus, emf.createEntityManager());
+		HandlerRunnable newHandler = new HandlerRunnable(new Socket(address, i), eventbus, manager);
 		eventbus.publishSync(new ClientConnectionOpendEvent(newHandler));
 	}
 	

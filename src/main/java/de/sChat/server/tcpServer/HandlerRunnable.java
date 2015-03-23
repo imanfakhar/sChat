@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -12,13 +13,14 @@ import javax.persistence.EntityManager;
 import de.joshuaschnabel.framework.eventbus.bus.EventBus;
 import de.joshuaschnabel.framework.eventbus.event.Handler;
 import de.sChat.server.data.chatClient.ChatClient;
-import de.sChat.server.data.chatClient.ChatClientComperator;
 import de.sChat.server.data.dao.DaoChatClient;
+import de.sChat.server.data.dao.DaoTextMessage;
 import de.sChat.server.data.events.IncommingMessageEvent;
 import de.sChat.server.data.events.OutGoingMessageEvent;
 import de.sChat.server.data.messages.InternMessage;
 import de.sChat.server.data.messages.TextMessage;
 import de.sChat.server.data.messages.parser.MessageParser;
+import de.sChat.server.httpServer.EntityManagerHolder;
 import de.sChat.server.tcpServer.events.ClientConnectionClosedEvent;
 
 public class HandlerRunnable implements Runnable{
@@ -42,9 +44,10 @@ public class HandlerRunnable implements Runnable{
 	@Handler
 	public void outgoingMessage(OutGoingMessageEvent event) 
 	{
-    	DaoChatClient dao = new DaoChatClient(em);
-    	ChatClient cc = dao.getChatClient(this.name);
-    	List<TextMessage> messages = ChatClientComperator.getSinceLastSeenMessages(cc.getMessages(), cc.getLastseen());
+		DaoChatClient dao = new DaoChatClient(em);
+		DaoTextMessage daotm = new DaoTextMessage(em);
+		ChatClient cc = dao.getChatClient(name);
+		List<TextMessage> messages = daotm.getMessagesSince(cc, new Date());
     	for (TextMessage textMessage : messages) {
     		out.println(MessageParser.parseMessage(textMessage));
 		}

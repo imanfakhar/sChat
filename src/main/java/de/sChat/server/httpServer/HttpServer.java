@@ -1,5 +1,6 @@
 package de.sChat.server.httpServer;
 
+import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 
 import org.eclipse.jetty.server.Handler;
@@ -14,10 +15,10 @@ import de.joshuaschnabel.framework.eventbus.bus.EventBus;
 
 public class HttpServer {
 	
-	public HttpServer(EventBus bus, EntityManagerFactory emf, Integer httpport) 
+	public HttpServer(EventBus bus, EntityManager manager, Integer httpport) 
 	{
 		BusHolder.setBus(bus);
-		EntityManagerHolder.setEntityManager(emf.createEntityManager());
+		EntityManagerHolder.setEntityManager(manager);
 		
 		ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
         context.setContextPath("/");
@@ -35,7 +36,7 @@ public class HttpServer {
         ResourceHandler resource_handler = new ResourceHandler();
         resource_handler.setDirectoriesListed(false);
         resource_handler.setWelcomeFiles(new String[]{ "index.html" });
-        resource_handler.setResourceBase("./src/test/resources/de/sChat/staticResources/");
+        resource_handler.setResourceBase("./src/main/resources/de/sChat/staticResources/");
         
         ContextHandler ctx = new ContextHandler("/my-files"); /* the server uri path */
         ctx.setHandler(resource_handler);

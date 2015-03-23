@@ -28,6 +28,8 @@ public class DaoChatClient {
 		transaction.begin();
 		ChatClient chatclient = (ChatClient) entityManager.find(ChatClient.class, name);
 		transaction.commit();
+		if(chatclient == null)
+			chatclient = new ChatClient(name);
 		return chatclient;
 	}
 	

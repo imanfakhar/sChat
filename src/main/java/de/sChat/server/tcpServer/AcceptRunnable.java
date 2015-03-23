@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 
 import de.joshuaschnabel.framework.eventbus.bus.EventBus;
@@ -13,13 +14,13 @@ public class AcceptRunnable implements Runnable {
 
 	private ServerSocket server;
 	private EventBus bus;
-	private EntityManagerFactory emf;
+	private EntityManager manager;
 
 
-	public AcceptRunnable(ServerSocket server, EventBus bus, EntityManagerFactory emf) {
+	public AcceptRunnable(ServerSocket server, EventBus bus, EntityManager manager) {
 		this.bus = bus;
 		this.server = server;
-		this.emf = emf;
+		this.manager = manager;
 	}
 
 	@Override
@@ -28,7 +29,7 @@ public class AcceptRunnable implements Runnable {
 			Socket client;
 			try {
 				client = server.accept();
-				HandlerRunnable newHandler = new HandlerRunnable(client, bus, emf.createEntityManager());
+				HandlerRunnable newHandler = new HandlerRunnable(client, bus, manager);
 				bus.publishSync(new ClientConnectionOpendEvent(newHandler));
 			} catch (IOException e) {
 				e.printStackTrace();

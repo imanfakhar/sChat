@@ -1,7 +1,6 @@
 package de.sChat.main;
 
 import de.sChat.server.ChatServer;
-import de.sChat.server.data.messages.InternMessage;
 import de.sChat.server.data.messages.TextMessage;
 import de.sChat.server.data.messages.parser.MessageParser;
 
