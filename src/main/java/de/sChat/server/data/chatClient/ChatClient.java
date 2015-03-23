@@ -44,4 +44,3 @@ public class ChatClient {
 		return messages;
 	}
 }
-
