@@ -1,4 +1,4 @@
-package de.sChat.server.shared.messageHub;
+package de.sChat.server.shared.chatClient;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -12,7 +12,7 @@ import javax.persistence.OneToMany;
 
 import org.hibernate.annotations.Type;
 
-import de.sChat.server.shared.messages.TextMessage;
+import de.sChat.server.data.messages.TextMessage;
 
 @Entity
 public class ChatClient {

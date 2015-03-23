@@ -13,8 +13,6 @@ import de.joshuaschnabel.framework.eventbus.bus.EventBusException;
 import de.joshuaschnabel.framework.eventbus.event.Handler;
 import de.sChat.server.data.events.IncommingMessageEvent;
 import de.sChat.server.data.events.OutGoingMessageEvent;
-import de.sChat.server.data.messages.InternMessage;
-import de.sChat.server.data.messages.parser.MessageParser;
 import de.sChat.server.tcpServer.events.ClientConnectionClosedEvent;
 import de.sChat.server.tcpServer.events.ClientConnectionOpendEvent;
 
