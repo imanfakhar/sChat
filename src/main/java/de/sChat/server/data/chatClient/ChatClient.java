@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+import de.sChat.server.data.messages.AuthMessage;
 import de.sChat.server.data.messages.TextMessage;
 
 @Entity
@@ -18,8 +19,13 @@ public class ChatClient {
 	
 	private Date lastseen;
 	
+	private String password;
+	
 	@OneToMany(mappedBy="owner" )
 	private List<TextMessage> messages = new ArrayList<TextMessage>();
+	
+	@OneToMany(mappedBy="owner" )
+	private List<AuthMessage> auths = new ArrayList<AuthMessage>();
 	
 	public ChatClient() {
 	}
@@ -52,4 +58,19 @@ public class ChatClient {
 		this.messages = messages;
 	}
 
+	public List<AuthMessage> getAuths() {
+		return auths;
+	}
+
+	public void setAuths(List<AuthMessage> auths) {
+		this.auths = auths;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
 }

@@ -1,17 +1,17 @@
 package de.sChat.server.data.events;
 
 import de.joshuaschnabel.framework.eventbus.event.Event;
-import de.sChat.server.data.messages.InternMessage;
+import de.sChat.server.data.messages.parser.Message;
 
 public class IncommingMessageEvent extends Event {
 	
-	private InternMessage msg;
+	private Message msg;
 
-	public IncommingMessageEvent(InternMessage msg) {
+	public IncommingMessageEvent(Message msg) {
 		this.msg = msg;
 	}
 
-	public InternMessage getMsg() {
+	public Message getMsg() {
 		return msg;
 	}
 

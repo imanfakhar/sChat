@@ -17,8 +17,8 @@ import de.sChat.server.data.dao.DaoChatClient;
 import de.sChat.server.data.dao.DaoTextMessage;
 import de.sChat.server.data.events.IncommingMessageEvent;
 import de.sChat.server.data.events.OutGoingMessageEvent;
-import de.sChat.server.data.messages.InternMessage;
 import de.sChat.server.data.messages.TextMessage;
+import de.sChat.server.data.messages.parser.Message;
 import de.sChat.server.data.messages.parser.MessageParser;
 import de.sChat.server.httpServer.EntityManagerHolder;
 import de.sChat.server.tcpServer.events.ClientConnectionClosedEvent;
@@ -80,8 +80,7 @@ public class HandlerRunnable implements Runnable{
 		}
 		if (input != null) 
 		{
-			InternMessage msg = MessageParser.parseMessage(input);
-			msg.setSender(this);
+			Message msg = MessageParser.parseMessage(input);
 			this.name = ((TextMessage) msg).getName();
 			eventbus.publishSync(new IncommingMessageEvent(msg));
 		}

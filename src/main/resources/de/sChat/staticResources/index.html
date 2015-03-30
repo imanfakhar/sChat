@@ -48,15 +48,49 @@
 		}
 		function onload()
 		{
+			if(confirm("Sind sie noch nicht registriert?"))
+			{
+				name = prompt("Bitte geben sie ihren Namen an", "");
+				password = prompt("Bitte geben sie iht Password an", "");
+				register(name);
+			}
+			name = prompt("Bitte geben sie ihren Namen an", "");
+			password = prompt("Bitte geben sie iht Password an", "");
+			login(name,password);
 			$('#textarea').val("");
-			name = prompt("Please enter your name", "Harry Potter");
 			setInterval(function(){resive()}, 4000);
+		}
+		function register(name,password)
+		{
+			$.ajax({
+				async: false,
+	    		type: "POST",
+	    		url: "/msg/sendMessage/",
+	    		data: JSON.stringify({"register":{"username":name,"password":password},"type":"register"}),
+	    		contentType: "application/json; charset=utf-8",
+	    		dataType: "json",
+	    		failure: function(errMsg) {alert(errMsg);},
+	    		success: function(msg){alert(msg);}
+			});
+		}
+		function login(name,password)
+		{
+			$.ajax({
+				async: false,
+	    		type: "POST",
+	    		url: "/msg/sendMessage/",
+	    		data: JSON.stringify({"login":{"username":name,"password":password},"type":"login"}),
+	    		contentType: "application/json; charset=utf-8",
+	    		dataType: "json",
+	    		failure: function(errMsg) {alert(errMsg);},
+	    		success: function(msg){alert(msg);}
+			});
 		}
 	</script>
 </head>
 <body onload="onload()">
 	<h2>sChat - Webclient</h2>
-	<textarea name="textarea" id="textarea" rows="15" cols="300"></textarea>
+	<textarea name="textarea" id="textarea" rows="15" style="width: 100%"></textarea>
 	<hr>
 	<input name="input_msg" id="input_msg" type="text">
 	<input name="input_send" id="input_send" type="button" value="Senden!" onclick="sendMsg();">

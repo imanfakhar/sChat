@@ -9,9 +9,10 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
 import de.sChat.server.data.chatClient.ChatClient;
+import de.sChat.server.data.messages.parser.Message;
 
 @Entity
-public class TextMessage extends InternMessage {
+public class TextMessage extends Message {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -32,6 +33,12 @@ public class TextMessage extends InternMessage {
 	public TextMessage(String name, String nachricht) {
 		this.name = name;
 		this.message = nachricht;
+	}
+	
+	public TextMessage(TextMessage another) {
+		this.name = another.getName();
+		this.creationTime = another.getCreationTime();
+		this.message = another.getMessage();
 	}
 
 	public Long getId() {

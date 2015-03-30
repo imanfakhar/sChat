@@ -35,11 +35,8 @@ public class DaoChatClient {
 	
 	public List<ChatClient> getAllChatClients()
 	{
-		EntityTransaction transaction = entityManager.getTransaction();
-		transaction.begin();
-		TypedQuery<ChatClient> query = entityManager.createQuery("SELECT e FROM ChatClient e", ChatClient.class);
+		TypedQuery<ChatClient> query = entityManager.createQuery("FROM ChatClient", ChatClient.class);
 		List<ChatClient> list = (List<ChatClient>) query.getResultList();
-		transaction.commit();
 		return list;
 	}
 	

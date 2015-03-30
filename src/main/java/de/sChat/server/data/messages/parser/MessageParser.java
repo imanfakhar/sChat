@@ -1,39 +1,90 @@
 package de.sChat.server.data.messages.parser;
 
-import de.sChat.server.data.messages.InternMessage;
+import de.sChat.server.data.messages.AuthMessage;
+import de.sChat.server.data.messages.ErrorMessage;
+import de.sChat.server.data.messages.LoginMessage;
+import de.sChat.server.data.messages.RegisterMessage;
 import de.sChat.server.data.messages.TextMessage;
+import de.sChat.server.data.messages.parser.Message;
+import json_parser.data_types.JSONInteger;
 import json_parser.data_types.JSONObject;
 import json_parser.data_types.JSONString;
 
 public class MessageParser {
 	
-	public static InternMessage parseMessage(String message)
+	public static Message parseMessage(String message)
 	{
 		JSONObject jsonMessage = new JSONObject();
 		jsonMessage.parse(message);
 		String type = ((JSONString) jsonMessage.getValue("type")).getValue();
 		switch (type) {
 			case "message":
-				JSONObject dataObject = (JSONObject) jsonMessage.getValue("data");
-				String nachricht = ((JSONString) dataObject.getValue("message")).getValue();
-				String name = ((JSONString) dataObject.getValue("name")).getValue();
-				return new TextMessage(name, nachricht);
+			return parseTextmessage(jsonMessage);
+			case "login":
+			return parseLoginmessage(jsonMessage);
+			case "register":
+			return parseRegistermessage(jsonMessage);
 		}
 		return null;
 	}
 
-	public static String parseMessage(InternMessage message) {
-		if(message instanceof TextMessage)
-		{
-			JSONObject txtMessage = new JSONObject();
-			txtMessage.addValue("type", new JSONString("message"));
-			JSONObject dataObject = new JSONObject();
-			txtMessage.addValue("data", dataObject);
-			dataObject.addValue("message", new JSONString(((TextMessage) message).getMessage()));
-			dataObject.addValue("name", new JSONString(((TextMessage) message).getName()));
-			return txtMessage.print();
-		}
-		return "";
+	private static Message parseTextmessage(JSONObject jsonMessage) {
+		JSONObject dataObject = (JSONObject) jsonMessage.getValue("data");
+		String nachricht = ((JSONString) dataObject.getValue("message")).getValue();
+		String name = ((JSONString) dataObject.getValue("name")).getValue();
+		return new TextMessage(name, nachricht);
+	}
+	
+	private static Message parseLoginmessage(JSONObject jsonMessage) {
+		JSONObject dataObject = (JSONObject) jsonMessage.getValue("login");
+		String username = ((JSONString) dataObject.getValue("username")).getValue();
+		String password = ((JSONString) dataObject.getValue("password")).getValue();
+		return new LoginMessage(username, password);
+	}
+	
+	private static Message parseRegistermessage(JSONObject jsonMessage) {
+		JSONObject dataObject = (JSONObject) jsonMessage.getValue("register");
+		String username = ((JSONString) dataObject.getValue("username")).getValue();
+		String password = ((JSONString) dataObject.getValue("password")).getValue();
+		return new RegisterMessage(username, password);
 	}
 
+	public static String parseMessage(Message message) {
+		if(message instanceof TextMessage)
+			return parseTextmessage(message);
+		if(message instanceof AuthMessage)
+			return parseAuthmessage(message);
+		if(message instanceof ErrorMessage)
+			return parseErrormessage(message);
+		return "";
+	}
+	
+	private static String parseErrormessage(Message message) {
+		JSONObject txtMessage = new JSONObject();
+		txtMessage.addValue("type", new JSONString("auth"));
+		JSONObject dataObject = new JSONObject();
+		txtMessage.addValue("data", dataObject);
+		dataObject.addValue("error", new JSONString(((ErrorMessage) message).getError()));
+		dataObject.addValue("errorid", new JSONInteger(((ErrorMessage) message).getErrorcode()));
+		return txtMessage.print();
+	}
+
+	private static String parseTextmessage(Message message) {
+		JSONObject txtMessage = new JSONObject();
+		txtMessage.addValue("type", new JSONString("message"));
+		JSONObject dataObject = new JSONObject();
+		txtMessage.addValue("data", dataObject);
+		dataObject.addValue("message", new JSONString(((TextMessage) message).getMessage()));
+		dataObject.addValue("name", new JSONString(((TextMessage) message).getName()));
+		return txtMessage.print();
+	}
+	
+	private static String parseAuthmessage(Message message) {
+		JSONObject txtMessage = new JSONObject();
+		txtMessage.addValue("type", new JSONString("auth"));
+		JSONObject dataObject = new JSONObject();
+		txtMessage.addValue("data", dataObject);
+		dataObject.addValue("uid", new JSONString(((AuthMessage) message).getUid()));
+		return txtMessage.print();
+	}
 }
