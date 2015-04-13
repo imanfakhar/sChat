@@ -32,7 +32,9 @@ public class MessageParser {
 		JSONObject dataObject = (JSONObject) jsonMessage.getValue("data");
 		String nachricht = ((JSONString) dataObject.getValue("message")).getValue();
 		String name = ((JSONString) dataObject.getValue("name")).getValue();
-		return new TextMessage(name, nachricht);
+		TextMessage tm = new TextMessage(name, nachricht);
+		tm.setUid(((JSONString) jsonMessage.getValue("auth")).getValue());
+		return tm;
 	}
 	
 	private static Message parseLoginmessage(JSONObject jsonMessage) {
@@ -56,12 +58,24 @@ public class MessageParser {
 			return parseAuthmessage(message);
 		if(message instanceof ErrorMessage)
 			return parseErrormessage(message);
+		if(message instanceof RegisterMessage)
+			return parseEgistermessage(message);
 		return "";
 	}
 	
+	private static String parseEgistermessage(Message message) {
+		JSONObject txtMessage = new JSONObject();
+		txtMessage.addValue("type", new JSONString("register"));
+		JSONObject dataObject = new JSONObject();
+		txtMessage.addValue("register", dataObject);
+		dataObject.addValue("password", new JSONString(((RegisterMessage) message).getPassword()));
+		dataObject.addValue("username", new JSONString(((RegisterMessage) message).getUsername()));
+		return txtMessage.print();
+	}
+
 	private static String parseErrormessage(Message message) {
 		JSONObject txtMessage = new JSONObject();
-		txtMessage.addValue("type", new JSONString("auth"));
+		txtMessage.addValue("type", new JSONString("error"));
 		JSONObject dataObject = new JSONObject();
 		txtMessage.addValue("data", dataObject);
 		dataObject.addValue("error", new JSONString(((ErrorMessage) message).getError()));

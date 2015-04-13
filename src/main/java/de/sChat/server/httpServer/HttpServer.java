@@ -28,10 +28,13 @@ public class HttpServer {
         HandlerCollection handlerCollection = new HandlerCollection();
         handlerCollection.setHandlers(new Handler[] {context});
                 
-        ServletHolder jerseyServlet = context.addServlet(org.glassfish.jersey.servlet.ServletContainer.class, "/*");
-        jerseyServlet.setInitOrder(0);
- 
+        ServletHolder jerseyServlet = context.addServlet(org.glassfish.jersey.servlet.ServletContainer.class, "/msg/*");
+        jerseyServlet.setInitOrder(0); 
         jerseyServlet.setInitParameter("jersey.config.server.provider.classnames", MsgPoint.class.getCanonicalName());
+  
+        ServletHolder jerseyServlet2 = context.addServlet(org.glassfish.jersey.servlet.ServletContainer.class, "/api/*");
+        jerseyServlet2.setInitOrder(1); 
+        jerseyServlet2.setInitParameter("jersey.config.server.provider.classnames", ApiPoint.class.getCanonicalName());
         
         ResourceHandler resource_handler = new ResourceHandler();
         resource_handler.setDirectoriesListed(false);

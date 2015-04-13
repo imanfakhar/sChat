@@ -10,8 +10,8 @@
 		{
 		$.ajax({
     		type: "POST",
-    		url: "/msg/sendMessage/",
-    		data: JSON.stringify({"data":{"message":msg,"name":name},"type":"message"}),
+    		url: "/msg/msg/sendMessage/",
+    		data: JSON.stringify({"data":{"message":msg,"name":name},"type":"message","auth":auth}),
     		contentType: "application/json; charset=utf-8",
     		dataType: "json",
     		failure: function(errMsg) {alert(errMsg);}
@@ -19,13 +19,14 @@
 		}
 		var time = 0;
 		var name = "";
+		var auth = "";
 		function resive()
 		{
 		var ttime = Math.floor(Date.now() / 1000);
 		$.ajax({
     		type: "GET",
-    		url: "/msg/getMessage/",
-    		data: "time="+time+"&name="+name,
+    		url: "/msg/msg/getMessage/",
+    		data: "time="+time+"&name="+name+"&auth="+auth,
     		contentType: "application/json; charset=utf-8",
     		dataType: "json",
     		success: function(array){
@@ -51,8 +52,8 @@
 			if(confirm("Sind sie noch nicht registriert?"))
 			{
 				name = prompt("Bitte geben sie ihren Namen an", "");
-				password = prompt("Bitte geben sie iht Password an", "");
-				register(name);
+				password = prompt("Bitte geben sie ihr Password an", "");
+				register(name,password);
 			}
 			name = prompt("Bitte geben sie ihren Namen an", "");
 			password = prompt("Bitte geben sie iht Password an", "");
@@ -65,12 +66,17 @@
 			$.ajax({
 				async: false,
 	    		type: "POST",
-	    		url: "/msg/sendMessage/",
+	    		url: "/api/api/register/",
 	    		data: JSON.stringify({"register":{"username":name,"password":password},"type":"register"}),
 	    		contentType: "application/json; charset=utf-8",
 	    		dataType: "json",
-	    		failure: function(errMsg) {alert(errMsg);},
-	    		success: function(msg){alert(msg);}
+	    		failure: function(errMsg) {alert("Ein unerwarteter Fehler ist augetreten!");},
+	    		success: function(msg){
+	    			if(msg.type == "error")
+	    				alert("Ein Fehler ist aufgetreten: "+msg.data.error);
+	    			else
+	    				alert("Sie haben sich erfolgreich regstriert!");
+	    			}
 			});
 		}
 		function login(name,password)
@@ -78,12 +84,22 @@
 			$.ajax({
 				async: false,
 	    		type: "POST",
-	    		url: "/msg/sendMessage/",
+	    		url: "/api/api/login/",
 	    		data: JSON.stringify({"login":{"username":name,"password":password},"type":"login"}),
 	    		contentType: "application/json; charset=utf-8",
 	    		dataType: "json",
-	    		failure: function(errMsg) {alert(errMsg);},
-	    		success: function(msg){alert(msg);}
+	    		failure: function(errMsg) {alert("Ein unerwarteter Fehler ist augetreten!");},
+	    		success: function(msg){
+	    			if(msg.type == "error")
+	    				{
+	    				alert("Ein Fehler ist aufgetreten: "+msg.data.error);
+	    				}
+	    			else if(msg.type == "auth")
+	    				{
+	    				auth = msg.data.uid;
+	    				alert("Sie haben sich erfolgreich eingeloggt!");
+	    				}
+	    			}
 			});
 		}
 	</script>

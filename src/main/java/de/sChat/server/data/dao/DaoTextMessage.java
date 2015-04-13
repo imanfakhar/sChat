@@ -41,7 +41,7 @@ public class DaoTextMessage {
 
 	public List<TextMessage> getMessagesSince(ChatClient client, Date time)
 	{		
-		TypedQuery<TextMessage> query = entityManager.createQuery("From TextMessage Where owner = :name And creationTime >= :time",TextMessage.class);
+		TypedQuery<TextMessage> query = entityManager.createQuery("From TextMessage Where owner = :name And creationTime > :time",TextMessage.class);
 		query.setParameter("name", client);
 		query.setParameter("time", time);		
 		return (List<TextMessage>) query.getResultList();

@@ -7,7 +7,6 @@ import java.net.UnknownHostException;
 import java.util.Vector;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
 
 import de.joshuaschnabel.framework.eventbus.bus.EventBus;
 import de.joshuaschnabel.framework.eventbus.bus.EventBusException;
@@ -52,7 +51,7 @@ public class TCPServer {
 	}
 
 	@Handler
-	public void addClient(ClientConnectionClosedEvent event) {
+	public void removeClient(ClientConnectionClosedEvent event) {
 		listeMitThreads.remove(event.getHandlerRunnable());
 	}
 }

@@ -1,6 +1,7 @@
 package de.sChat.server.data.messages;
 
 import java.util.Date;
+import java.util.UUID;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -17,7 +18,6 @@ import de.sChat.server.data.messages.parser.Message;
 public class AuthMessage extends Message {
 	
 	@Id
-	@GenericGenerator(name = "uuid", strategy = "uuid2")
 	private String uid = null;
  
 	@ManyToOne
@@ -58,6 +58,9 @@ public class AuthMessage extends Message {
 		this.creationDate = creationDate;
 	}
 	
-		
+	public void generateUUID()
+	{
+		this.uid = UUID.randomUUID().toString();
+	}
 
 }

@@ -17,9 +17,11 @@ import de.sChat.server.data.dao.DaoChatClient;
 import de.sChat.server.data.dao.DaoTextMessage;
 import de.sChat.server.data.events.IncommingMessageEvent;
 import de.sChat.server.data.events.OutGoingMessageEvent;
+import de.sChat.server.data.messages.RegisterMessage;
 import de.sChat.server.data.messages.TextMessage;
 import de.sChat.server.data.messages.parser.Message;
 import de.sChat.server.data.messages.parser.MessageParser;
+import de.sChat.server.httpServer.BusHolder;
 import de.sChat.server.httpServer.EntityManagerHolder;
 import de.sChat.server.tcpServer.events.ClientConnectionClosedEvent;
 
@@ -30,7 +32,6 @@ public class HandlerRunnable implements Runnable{
 	private EventBus eventbus;
 
 	private BufferedReader reader;
-	private String name;
 	private EntityManager em;
 
 	public HandlerRunnable(Socket acceptedClient, EventBus eventbus, EntityManager em) throws IOException 
@@ -42,15 +43,10 @@ public class HandlerRunnable implements Runnable{
 	}
 
 	@Handler
-	public void outgoingMessage(OutGoingMessageEvent event) 
+	public void outgoingMessage(IncommingMessageEvent event) 
 	{
-		DaoChatClient dao = new DaoChatClient(em);
-		DaoTextMessage daotm = new DaoTextMessage(em);
-		ChatClient cc = dao.getChatClient(name);
-		List<TextMessage> messages = daotm.getMessagesSince(cc, new Date());
-    	for (TextMessage textMessage : messages) {
-    		out.println(MessageParser.parseMessage(textMessage));
-		}
+		Message msg = event.getMsg();
+		out.println(MessageParser.parseMessage(msg));
 	}
 
 	public void run() {
@@ -72,6 +68,19 @@ public class HandlerRunnable implements Runnable{
 
 		}
 	}
+	
+	private boolean processRegisterMessage(Message message) {
+		DaoChatClient daocc = new DaoChatClient(EntityManagerHolder.getEntityManager());
+		RegisterMessage msg = (RegisterMessage) message;
+		ChatClient cl = daocc.getChatClient(msg.getUsername());
+		if(cl.getPassword() == null)
+		{
+			cl.setPassword(msg.getPassword());
+			daocc.setChatClient(cl);
+			return true;
+		}
+		return false;
+	}
 
 	private void handleConnection() throws IOException {
 		String input = null;
@@ -81,8 +90,14 @@ public class HandlerRunnable implements Runnable{
 		if (input != null) 
 		{
 			Message msg = MessageParser.parseMessage(input);
-			this.name = ((TextMessage) msg).getName();
-			eventbus.publishSync(new IncommingMessageEvent(msg));
+			if(msg instanceof TextMessage)
+			{
+				BusHolder.getBus().publishSync(new IncommingMessageEvent(msg));
+			}
+			if(msg instanceof RegisterMessage)
+			{
+				processRegisterMessage(msg);
+			}
 		}
 		if(acceptedClient.isClosed())
 		{
