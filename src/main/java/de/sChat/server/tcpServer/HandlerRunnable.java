@@ -16,8 +16,8 @@ import de.sChat.server.data.chatClient.ChatClient;
 import de.sChat.server.data.dao.DaoChatClient;
 import de.sChat.server.data.dao.DaoTextMessage;
 import de.sChat.server.data.events.IncommingMessageEvent;
-import de.sChat.server.data.events.OutGoingMessageEvent;
 import de.sChat.server.data.messages.RegisterMessage;
+import de.sChat.server.data.messages.ServerConnectMessage;
 import de.sChat.server.data.messages.TextMessage;
 import de.sChat.server.data.messages.parser.Message;
 import de.sChat.server.data.messages.parser.MessageParser;
@@ -97,6 +97,15 @@ public class HandlerRunnable implements Runnable{
 			if(msg instanceof RegisterMessage)
 			{
 				processRegisterMessage(msg);
+			}
+			if(msg instanceof ServerConnectMessage)
+			{
+				DaoTextMessage daotm = new DaoTextMessage(em);
+				Integer time = ((ServerConnectMessage) msg).getTime();
+				List<TextMessage> messages = daotm.getMessagesSince(new Date(time * 1000));
+				for (TextMessage textMessage : messages) {
+					out.println(MessageParser.parseMessage(textMessage));
+				}
 			}
 		}
 		if(acceptedClient.isClosed())

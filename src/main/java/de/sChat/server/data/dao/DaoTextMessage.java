@@ -46,4 +46,11 @@ public class DaoTextMessage {
 		query.setParameter("time", time);		
 		return (List<TextMessage>) query.getResultList();
 	}
+	
+	public List<TextMessage> getMessagesSince(Date time)
+	{		
+		TypedQuery<TextMessage> query = entityManager.createQuery("From TextMessage Where creationTime > :time",TextMessage.class);
+		query.setParameter("time", time);		
+		return (List<TextMessage>) query.getResultList();
+	}
 }

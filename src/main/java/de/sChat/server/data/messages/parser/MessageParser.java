@@ -4,6 +4,7 @@ import de.sChat.server.data.messages.AuthMessage;
 import de.sChat.server.data.messages.ErrorMessage;
 import de.sChat.server.data.messages.LoginMessage;
 import de.sChat.server.data.messages.RegisterMessage;
+import de.sChat.server.data.messages.ServerConnectMessage;
 import de.sChat.server.data.messages.TextMessage;
 import de.sChat.server.data.messages.parser.Message;
 import json_parser.data_types.JSONInteger;
@@ -24,8 +25,17 @@ public class MessageParser {
 			return parseLoginmessage(jsonMessage);
 			case "register":
 			return parseRegistermessage(jsonMessage);
+			case "serverconnect":
+			return parseServerConnectMessage(jsonMessage);
 		}
 		return null;
+	}
+
+	private static Message parseServerConnectMessage(JSONObject jsonMessage) {
+		JSONObject dataObject = (JSONObject) jsonMessage.getValue("serverconnect");
+		Integer time = ((JSONInteger) dataObject.getValue("time")).getValue();
+		ServerConnectMessage tm = new ServerConnectMessage(time);
+		return tm;
 	}
 
 	private static Message parseTextmessage(JSONObject jsonMessage) {
@@ -60,9 +70,20 @@ public class MessageParser {
 			return parseErrormessage(message);
 		if(message instanceof RegisterMessage)
 			return parseEgistermessage(message);
+		if(message instanceof ServerConnectMessage)
+			return parseServerConnectMessage(message);
 		return "";
 	}
 	
+	private static String parseServerConnectMessage(Message message) {
+		JSONObject txtMessage = new JSONObject();
+		txtMessage.addValue("type", new JSONString("serverconnect"));
+		JSONObject dataObject = new JSONObject();
+		txtMessage.addValue("serverconnect", dataObject);
+		dataObject.addValue("time", new JSONInteger((((ServerConnectMessage) message).getTime())));
+		return txtMessage.print();
+	}
+
 	private static String parseEgistermessage(Message message) {
 		JSONObject txtMessage = new JSONObject();
 		txtMessage.addValue("type", new JSONString("register"));
