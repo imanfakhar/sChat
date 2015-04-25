@@ -5,8 +5,6 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-
 import de.joshuaschnabel.framework.eventbus.bus.EventBus;
 import de.sChat.server.tcpServer.events.ClientConnectionOpendEvent;
 
@@ -31,6 +29,7 @@ public class AcceptRunnable implements Runnable {
 				client = server.accept();
 				HandlerRunnable newHandler = new HandlerRunnable(client, bus, manager);
 				bus.publishSync(new ClientConnectionOpendEvent(newHandler));
+				System.out.println(client.toString()+" ANGENOMMEN!");
 			} catch (IOException e) {
 				e.printStackTrace();
 			}

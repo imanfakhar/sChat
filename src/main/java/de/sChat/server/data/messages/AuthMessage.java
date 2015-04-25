@@ -4,12 +4,8 @@ import java.util.Date;
 import java.util.UUID;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-
-import org.hibernate.annotations.GenericGenerator;
 
 import de.sChat.server.data.chatClient.ChatClient;
 import de.sChat.server.data.messages.parser.Message;

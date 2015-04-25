@@ -1,6 +1,7 @@
 package de.sChat.server;
 
 import java.io.IOException;
+import java.net.UnknownHostException;
 
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
@@ -14,18 +15,32 @@ import de.sChat.server.tcpServer.TCPServer;
 public class ChatServer {
 	
 	private EventBus bus;
-	private HttpServer http;
 	private TCPServer tcp;
-	private ChatClientBusAdapter busadapter;
 	private EntityManagerFactory emf;
+	private Integer tcpport;
+	private Integer httpport;
 
 	public ChatServer(Integer tcpport, Integer httpport) throws IOException, EventBusException 
 	{
 		emf = Persistence.createEntityManagerFactory("emf");
 		bus = new EventBus();
-		busadapter = new ChatClientBusAdapter(bus,emf.createEntityManager());
-		this.tcp = new TCPServer(bus, emf.createEntityManager(), tcpport);
-		this.http = new HttpServer(bus, emf.createEntityManager(), httpport);
+		new ChatClientBusAdapter(bus,emf.createEntityManager());
+		this.tcpport = tcpport;
+		this.httpport = httpport;
 	}
+
+	public void starthttp() {
+		new HttpServer(bus, emf.createEntityManager(), httpport);
+	}
+
+	public void starttcp() throws IOException,
+			EventBusException {
+		this.tcp = new TCPServer(bus, emf.createEntityManager(), tcpport);
+	}
+
+	public void connect(String serveraddress, int serverport) throws UnknownHostException, IOException {
+		this.tcp.connect(serveraddress, serverport);
+	}
+
 
 }

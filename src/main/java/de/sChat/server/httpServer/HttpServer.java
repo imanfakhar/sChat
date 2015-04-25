@@ -1,8 +1,6 @@
 package de.sChat.server.httpServer;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-
 import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.handler.ContextHandler;
@@ -39,9 +37,10 @@ public class HttpServer {
         ResourceHandler resource_handler = new ResourceHandler();
         resource_handler.setDirectoriesListed(false);
         resource_handler.setWelcomeFiles(new String[]{ "index.html" });
-        resource_handler.setResourceBase("./src/main/resources/de/sChat/staticResources/");
+        String webDir = getClass().getClassLoader().getResource("de/sChat/staticResources").toExternalForm();
+        resource_handler.setResourceBase(webDir);
         
-        ContextHandler ctx = new ContextHandler("/my-files"); /* the server uri path */
+        ContextHandler ctx = new ContextHandler("/www"); /* the server uri path */
         ctx.setHandler(resource_handler);
         
         handlerCollection.setHandlers(new Handler[] {ctx,context});

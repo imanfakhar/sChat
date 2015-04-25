@@ -5,7 +5,6 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
-import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
 import de.sChat.server.data.chatClient.ChatClient;
@@ -50,7 +49,17 @@ public class DaoTextMessage {
 	public List<TextMessage> getMessagesSince(Date time)
 	{		
 		TypedQuery<TextMessage> query = entityManager.createQuery("From TextMessage Where creationTime > :time",TextMessage.class);
-		query.setParameter("time", time);		
+		query.setParameter("time", time);	
 		return (List<TextMessage>) query.getResultList();
+	}
+	
+	public TextMessage getLastMessages()
+	{		
+		TypedQuery<TextMessage> query = entityManager.createQuery("From TextMessage ORDER BY creationTime DESC",TextMessage.class);
+		query.setMaxResults(1);
+		List<TextMessage> list = query.getResultList();
+		if(list.size() == 0)
+			return null;
+		return list.get(0);
 	}
 }

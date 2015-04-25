@@ -1,7 +1,5 @@
 package de.sChat.server.data.messages;
 
-import javax.persistence.Entity;
-
 import de.sChat.server.data.messages.parser.Message;
 
 public class RegisterMessage extends Message {

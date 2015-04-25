@@ -7,25 +7,26 @@ import de.sChat.server.data.messages.RegisterMessage;
 import de.sChat.server.data.messages.ServerConnectMessage;
 import de.sChat.server.data.messages.TextMessage;
 import de.sChat.server.data.messages.parser.Message;
+import json_parser.data_types.JSONDouble;
 import json_parser.data_types.JSONInteger;
 import json_parser.data_types.JSONObject;
 import json_parser.data_types.JSONString;
 
 public class MessageParser {
-	
+
 	public static Message parseMessage(String message)
 	{
 		JSONObject jsonMessage = new JSONObject();
 		jsonMessage.parse(message);
 		String type = ((JSONString) jsonMessage.getValue("type")).getValue();
 		switch (type) {
-			case "message":
+		case "message":
 			return parseTextmessage(jsonMessage);
-			case "login":
+		case "login":
 			return parseLoginmessage(jsonMessage);
-			case "register":
+		case "register":
 			return parseRegistermessage(jsonMessage);
-			case "serverconnect":
+		case "serverconnect":
 			return parseServerConnectMessage(jsonMessage);
 		}
 		return null;
@@ -33,7 +34,11 @@ public class MessageParser {
 
 	private static Message parseServerConnectMessage(JSONObject jsonMessage) {
 		JSONObject dataObject = (JSONObject) jsonMessage.getValue("serverconnect");
-		Integer time = ((JSONInteger) dataObject.getValue("time")).getValue();
+		Integer time;
+		if(dataObject.getValue("time") instanceof JSONDouble)
+			time = (int) ((JSONDouble) dataObject.getValue("time")).getValue();
+		else
+			time = ((JSONInteger) dataObject.getValue("time")).getValue();
 		ServerConnectMessage tm = new ServerConnectMessage(time);
 		return tm;
 	}
@@ -43,17 +48,18 @@ public class MessageParser {
 		String nachricht = ((JSONString) dataObject.getValue("message")).getValue();
 		String name = ((JSONString) dataObject.getValue("name")).getValue();
 		TextMessage tm = new TextMessage(name, nachricht);
-		tm.setUid(((JSONString) jsonMessage.getValue("auth")).getValue());
+		if(jsonMessage.getValue("auth") != null)
+			tm.setUid(((JSONString) jsonMessage.getValue("auth")).getValue());
 		return tm;
 	}
-	
+
 	private static Message parseLoginmessage(JSONObject jsonMessage) {
 		JSONObject dataObject = (JSONObject) jsonMessage.getValue("login");
 		String username = ((JSONString) dataObject.getValue("username")).getValue();
 		String password = ((JSONString) dataObject.getValue("password")).getValue();
 		return new LoginMessage(username, password);
 	}
-	
+
 	private static Message parseRegistermessage(JSONObject jsonMessage) {
 		JSONObject dataObject = (JSONObject) jsonMessage.getValue("register");
 		String username = ((JSONString) dataObject.getValue("username")).getValue();
@@ -74,7 +80,7 @@ public class MessageParser {
 			return parseServerConnectMessage(message);
 		return "";
 	}
-	
+
 	private static String parseServerConnectMessage(Message message) {
 		JSONObject txtMessage = new JSONObject();
 		txtMessage.addValue("type", new JSONString("serverconnect"));
@@ -113,7 +119,7 @@ public class MessageParser {
 		dataObject.addValue("name", new JSONString(((TextMessage) message).getName()));
 		return txtMessage.print();
 	}
-	
+
 	private static String parseAuthmessage(Message message) {
 		JSONObject txtMessage = new JSONObject();
 		txtMessage.addValue("type", new JSONString("auth"));

@@ -11,8 +11,11 @@ import javax.persistence.EntityManager;
 import de.joshuaschnabel.framework.eventbus.bus.EventBus;
 import de.joshuaschnabel.framework.eventbus.bus.EventBusException;
 import de.joshuaschnabel.framework.eventbus.event.Handler;
+import de.sChat.server.data.dao.DaoTextMessage;
 import de.sChat.server.data.events.IncommingMessageEvent;
 import de.sChat.server.data.events.OutGoingMessageEvent;
+import de.sChat.server.data.messages.ServerConnectMessage;
+import de.sChat.server.data.messages.TextMessage;
 import de.sChat.server.tcpServer.events.ClientConnectionClosedEvent;
 import de.sChat.server.tcpServer.events.ClientConnectionOpendEvent;
 
@@ -32,9 +35,17 @@ public class TCPServer {
 		System.out.println("Server started @ "+port);
 	}
 
-	public void createClient(String address, int i) throws UnknownHostException, IOException {
+	public void connect(String address, int i) throws UnknownHostException, IOException {
 		HandlerRunnable newHandler = new HandlerRunnable(new Socket(address, i), eventbus, manager);
 		eventbus.publishSync(new ClientConnectionOpendEvent(newHandler));
+		DaoTextMessage dao = new DaoTextMessage(manager);
+		TextMessage msg = dao.getLastMessages();
+		int time = 0;
+		if(msg != null)
+		{
+			time = (int) (msg.getCreationTime().getTime()/1000);
+		}
+		eventbus.publishAsync(new IncommingMessageEvent(new ServerConnectMessage(time)));
 	}
 	
 	@Handler

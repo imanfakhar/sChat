@@ -1,16 +1,8 @@
 package de.sChat.server.data.dao;
 
-import java.util.Date;
-import java.util.List;
-
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
-import javax.persistence.Query;
-import javax.persistence.TypedQuery;
-
-import de.sChat.server.data.chatClient.ChatClient;
 import de.sChat.server.data.messages.AuthMessage;
-import de.sChat.server.data.messages.TextMessage;
 
 public class DaoAuthMessage {
 

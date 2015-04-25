@@ -33,6 +33,7 @@ public class HandlerRunnable implements Runnable{
 
 	private BufferedReader reader;
 	private EntityManager em;
+	private String last = "";
 
 	public HandlerRunnable(Socket acceptedClient, EventBus eventbus, EntityManager em) throws IOException 
 	{
@@ -46,13 +47,18 @@ public class HandlerRunnable implements Runnable{
 	public void outgoingMessage(IncommingMessageEvent event) 
 	{
 		Message msg = event.getMsg();
-		out.println(MessageParser.parseMessage(msg));
+		if(msg.getUid() == null)
+			msg.setUid("");
+		if(!msg.getUid().equals("Server"))
+		{
+			out.println(MessageParser.parseMessage(msg));
+		}
 	}
 
 	public void run() {
 		try {
+			reader = new BufferedReader(new InputStreamReader(acceptedClient.getInputStream()));
 			while (!out.checkError()) {
-				reader = new BufferedReader(new InputStreamReader(acceptedClient.getInputStream()));
 				handleConnection();
 			}
 		} catch (IOException e) {
@@ -68,7 +74,7 @@ public class HandlerRunnable implements Runnable{
 
 		}
 	}
-	
+
 	private boolean processRegisterMessage(Message message) {
 		DaoChatClient daocc = new DaoChatClient(EntityManagerHolder.getEntityManager());
 		RegisterMessage msg = (RegisterMessage) message;
@@ -84,14 +90,15 @@ public class HandlerRunnable implements Runnable{
 
 	private void handleConnection() throws IOException {
 		String input = null;
-		while (reader.ready()) {
-			input = reader.readLine();
-		}
+		input = reader.readLine();
 		if (input != null) 
 		{
+			System.out.println("<--- "+input);
 			Message msg = MessageParser.parseMessage(input);
+			System.out.println("<--- "+MessageParser.parseMessage(msg));
 			if(msg instanceof TextMessage)
 			{
+				msg.setUid("Server");
 				BusHolder.getBus().publishSync(new IncommingMessageEvent(msg));
 			}
 			if(msg instanceof RegisterMessage)
@@ -102,9 +109,16 @@ public class HandlerRunnable implements Runnable{
 			{
 				DaoTextMessage daotm = new DaoTextMessage(em);
 				Integer time = ((ServerConnectMessage) msg).getTime();
-				List<TextMessage> messages = daotm.getMessagesSince(new Date(time * 1000));
+				Date date = new Date(time * 1000);
+				System.out.println(date);
+				List<TextMessage> messages = daotm.getMessagesSince(date);
 				for (TextMessage textMessage : messages) {
-					out.println(MessageParser.parseMessage(textMessage));
+					if(!last.equals(textMessage.getMessage()))
+					{
+						out.println(MessageParser.parseMessage(textMessage));
+						System.out.println("---> "+MessageParser.parseMessage(textMessage));
+						last = textMessage.getMessage();
+					}
 				}
 			}
 		}

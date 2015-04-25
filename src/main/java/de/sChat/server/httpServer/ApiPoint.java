@@ -1,27 +1,21 @@
 package de.sChat.server.httpServer;
 
-import java.util.Date;
-import java.util.List;
 import java.util.regex.Pattern;
 
 import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 import de.sChat.server.data.chatClient.ChatClient;
 import de.sChat.server.data.dao.DaoAuthMessage;
 import de.sChat.server.data.dao.DaoChatClient;
-import de.sChat.server.data.dao.DaoTextMessage;
 import de.sChat.server.data.events.IncommingMessageEvent;
 import de.sChat.server.data.messages.AuthMessage;
 import de.sChat.server.data.messages.ErrorMessage;
 import de.sChat.server.data.messages.LoginMessage;
 import de.sChat.server.data.messages.RegisterMessage;
-import de.sChat.server.data.messages.TextMessage;
 import de.sChat.server.data.messages.parser.Message;
 import de.sChat.server.data.messages.parser.MessageParser;
 
@@ -73,7 +67,7 @@ public class ApiPoint {
 		DaoAuthMessage daoa = new DaoAuthMessage(EntityManagerHolder.getEntityManager());
 		LoginMessage msg = (LoginMessage) message;
 		ChatClient cc = daocc.getChatClient(msg.getUsername());
-		if(cc.getPassword().equals(msg.getPassword()))
+		if(cc.getPassword() != null && cc.getPassword().equals(msg.getPassword()))
 		{
 			AuthMessage amsg = new AuthMessage();
 			amsg.generateUUID();
