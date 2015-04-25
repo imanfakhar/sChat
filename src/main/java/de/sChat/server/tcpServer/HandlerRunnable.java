@@ -109,8 +109,8 @@ public class HandlerRunnable implements Runnable{
 			{
 				DaoTextMessage daotm = new DaoTextMessage(em);
 				Integer time = ((ServerConnectMessage) msg).getTime();
-				Date date = new Date(time * 1000);
-				System.out.println(date);
+				Date date = new Date(time*1000L);
+				System.out.println(date.toGMTString());
 				List<TextMessage> messages = daotm.getMessagesSince(date);
 				for (TextMessage textMessage : messages) {
 					if(!last.equals(textMessage.getMessage()))

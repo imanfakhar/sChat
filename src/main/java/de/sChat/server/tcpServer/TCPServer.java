@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.Date;
 import java.util.Vector;
 
 import javax.persistence.EntityManager;
@@ -41,9 +42,11 @@ public class TCPServer {
 		DaoTextMessage dao = new DaoTextMessage(manager);
 		TextMessage msg = dao.getLastMessages();
 		int time = 0;
+		System.out.println("###########################");
 		if(msg != null)
 		{
 			time = (int) (msg.getCreationTime().getTime()/1000);
+			System.out.println(new Date(time*1000L).toGMTString());
 		}
 		eventbus.publishAsync(new IncommingMessageEvent(new ServerConnectMessage(time)));
 	}
